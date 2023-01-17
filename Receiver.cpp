@@ -1,9 +1,6 @@
 
 #include "Receiver.hpp"
 
-class Receiver{
-    public:
-    void Action1(){
-
+void Receiver::Action1(){
+        //do something
     }
-};

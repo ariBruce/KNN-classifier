@@ -17,14 +17,15 @@
 class Choose1 : Command
 {
     public:
-        Receiver receiver1;
+        Receiver* receiver1;
         int sock1;
         string path;
     Choose1(Receiver*, int);
     ~Choose1();
     void execute() override;
     void read_csv(string csv_location);
+    bool is_double(const std::string& s);
 
-}
+};
 
 #endif

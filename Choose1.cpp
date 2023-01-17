@@ -21,10 +21,14 @@ Choose1::Choose1(Receiver* receiver, int sock){
     path = "";
 
 }
-void Choose1::execute() override
-{
-    this->receiver1->Action1();
-}
+
+Choose1::~Choose1(){
+    //
+};
+
+void Choose1::execute(){
+    receiver1->Action1();
+};
 void Choose1::read_csv(string csv_location){
     //open the file of csv type and throw exception if not
     this->path = csv_location;
@@ -49,11 +53,18 @@ void Choose1::read_csv(string csv_location){
         {
             if (is_double(word))
             {
-                int sent_bytes = send(this->sock, word.c_str(), word.size() + 1,  0);
+                int sent_bytes = send(this->sock1, word.c_str(), word.size() + 1,  0);
                     if(sent_bytes < 0){
                         perror("error sending bytes");
                     }
             }
             else labels = word;
         }
+    }
+    file.close();
+};
+
+bool Choose1::is_double(const std::string& s) {
+  std::regex double_regex("^[-+]?(0|[1-9][0-9]*)(\\.[0-9]+)?$");
+  return std::regex_match(s, double_regex);
 }
