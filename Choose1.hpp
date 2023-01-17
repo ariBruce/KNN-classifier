@@ -10,8 +10,12 @@
 #include <string.h>
 #include <fstream>
 #include <sstream>
+#include <regex>
 #include "Command.hpp"
 #include "Receiver.hpp"
+#include "client.hpp"
+using namespace std;
+
 
 
 class Choose1 : Command
@@ -23,9 +27,10 @@ class Choose1 : Command
     Choose1(Receiver*, int);
     ~Choose1();
     void execute() override;
-    void read_csv(string csv_location);
+    void readCsv(string csv_location);
     bool is_double(const std::string& s);
-
+    void get_train_path();
+    void get_test_path();
 };
 
 #endif
