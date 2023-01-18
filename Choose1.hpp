@@ -21,9 +21,8 @@ using namespace std;
 class Choose1 : Command
 {
     public:
-        Receiver* receiver1;
-        int sock1;
-        string path;
+    Receiver* receiver1;
+    string path;
     Choose1(Receiver*, int);
     ~Choose1();
     void execute() override;

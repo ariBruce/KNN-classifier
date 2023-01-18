@@ -6,8 +6,13 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
+#include <string>
+#include <restbed>
 #include "server.hpp"
 #include "Knn.hpp"
+
+using namespace restbed;
+
 
   Server::Server(std::string port, std::string csv_location) {
     if (!is_int(port)) {
@@ -58,47 +63,47 @@
     return newsockfd;
   };
 
-  void Server::Read_and_validate_input(int client_sockfd) {
-    char buffer[4096];
+void Server::Read_and_validate_input(int client_sockfd) {
+  char buffer[4096];
     // clear the buffer
-    bzero(buffer, 4096);
+  bzero(buffer, 4096);
     // read data from the client
-    int n = recv(client_sockfd, buffer, sizeof(buffer), 0);
-    if (n < 0) {
-      std::cerr << "ERROR reading from socket" << std::endl;
-      exit(1);
-    } else if (n == 0) {
+  int n = recv(client_sockfd, buffer, sizeof(buffer), 0);
+  if (n < 0) {
+    std::cerr << "ERROR reading from socket" << std::endl;
+    exit(1);
+  } else if (n == 0) {
       this -> disconnect = true;
-    } else {
-        this -> disconnect = false;
-        std::stringstream ss1;
-        ss1 << buffer;
-        std::string temp;
-        while (!ss1.eof())
-        {
-            // for getting each word in the string and converting it into a double
-            ss1 >> temp;
-
-            // make sure we recived a double that dosn't end/start with a dot and is not empty
-            if (is_double(temp))
-            {
-                // push the good value into the vector
-                this -> doubleValues.push_back(stod(temp));
-            } else {
-                break;
-            }
-        }
-        if (temp == "AUC" || temp == "MAN" || temp == "CHB" || temp == "CAN" || temp == "MIN") {
-            this->calculation_method = temp;
-        } else {
-            this->calculation_method = "invalid";
-        }
+  } else {
+    this -> disconnect = false;
+      std::stringstream ss1;
+      ss1 << buffer;
+      std::string temp;
+      while (!ss1.eof())
+      {
+          // for getting each word in the string and converting it into a double
         ss1 >> temp;
-        //make sure its a number with input checks
-        if(is_int(temp)) this -> k = stoi(temp);
-        if(!ss1.eof()) {
-          this -> k = 0;
+
+          // make sure we recived a double that dosn't end/start with a dot and is not empty
+        if (is_double(temp))
+        {
+          // push the good value into the vector
+          this -> doubleValues.push_back(stod(temp));
+        } else {
+          break;
         }
+      }
+      if (temp == "AUC" || temp == "MAN" || temp == "CHB" || temp == "CAN" || temp == "MIN") {
+          this->calculation_method = temp;
+      } else {
+          this->calculation_method = "invalid";
+      }
+      ss1 >> temp;
+      //make sure its a number with input checks
+      if(is_int(temp)) this -> k = stoi(temp);
+      if(!ss1.eof()) {
+        this -> k = 0;
+      }
   }
 };
 
