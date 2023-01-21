@@ -10,6 +10,9 @@
 #include <sstream>
 #include <regex>
 
+#include <string>
+#include <stdlib.h>
+
 
 #include "Command.hpp"
 #include "client.hpp"
@@ -26,8 +29,15 @@ void Receiver::Action1(){
     this->get_test(); //get the path and send it to the server as test data
 };
 void Receiver::Action2(){
-    
+    this->serverData();
 }
+void Receiver::Action3(){
+    this->classifyCsv();
+}
+void Receiver::Action4(){
+
+}
+
 
 void Receiver::readCsv(string csv_location) {
     //open the file of csv type and throw exception if not
@@ -65,9 +75,19 @@ void Receiver::readCsv(string csv_location) {
     file.close();
 };
 
-bool Receiver::is_double(const std::string& s) {
-  std::regex double_regex("^[-+]?(0|[1-9][0-9]*)(\\.[0-9]+)?$");
-  return std::regex_match(s, double_regex);
+bool Receiver::is_int(const std::string& s) {
+  std::regex int_regex("(0|[1-9][0-9]*)");
+  return std::regex_match(s, int_regex);
+}
+
+bool Receiver::is_metType(const std::string& s){
+    if(s=="AUC" || s== "MAN" || s== "CHB" || s== "CAN" || s =="MIN"){
+        return true;
+    }
+    else{
+        //do something
+    }
+
 }
 
 void Receiver::get_train() {
@@ -89,20 +109,60 @@ void Receiver::get_test(){
     }
     this->readCsv(test_file);
 };
+
+//for action 2
 void Receiver::serverData(){
-    char buffer[1024];
-    int bytes_received = recv(this->sock, buffer, sizeof(buffer), 0);
-    if (bytes_received <= 0) {
-        // Handle error
+    char bufferK[4096] = {0};
+    char bufferD[4096] = {0};
+    //receive the K
+    int kRead = read(sock , bufferK, 4096);
+    //receive the type of the metric
+    int dMetric = read(sock , bufferD, 4096);
+    printf("The current KNN parameters are: k =  %s, distance metric = %s\n", bufferK, bufferD);
+    string input;
+    getline(cin, input);
+    if (input.empty()) {
+        //return to menu
+    } else {
+        istringstream iss(input);
+        string kVal, metType;
+        iss >> kVal >> metType;
+        bool kVal_is_int = this->is_int(kVal);
+        if (this->is_int(kVal) && this->is_metType(metType))
+        {
+            send(this->sock , &kVal , sizeof(kVal) , 0 );
+            send(this->sock , &metType , sizeof(metType) , 0 );
+            //return to menue
+        } else {
+            if (!this->is_int(kVal) && !this->is_metType(metType))
+            {
+                printf("invalid value for metric\ninvalid value for K");
+                //return to menu
+            } else {
+                if(!this->is_int(kVal)){
+                    printf("invalid value for metric");
+                    //return to menue
+                } else {
+                    printf("invalid value for K");
+                    //return to menue
+                }
+            }            
+        }
     }
-    // Parse the request from the client
-    string request(buffer, bytes_received);
-    if (request == "get_arg_value") {
-        // Lookup the value of the argument
-        string value = lookup_arg_value();
-
-        // Send the value back to the client
-        send(this->sock, value.c_str(), value.size(), 0);
-    }
-
 };
+
+void Receiver::classifyCsv(){
+    //check if there are files in the server
+    if(true){
+        //run the algorithm on the server
+        printf("complete data classifying ");
+    } else {
+        printf("please upload data");
+    }
+    //return to menu
+}
+void Receiver::printClassify(){
+    //check the situation in the server
+    //if there are files and they were classify
+    
+}

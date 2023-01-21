@@ -22,11 +22,16 @@ class Receiver{
     ~Receiver();
     void Action1();
     void Action2();
+    void Action3();
+    void Action4();
     void readCsv(string csv_location);
-    bool is_double(const std::string& s);
+    bool is_int(const std::string& s);
+    bool is_metType(const std::string& s);
     void get_train();
     void get_test();
     void serverData();
+    void classifyCsv();
+    void printClassify();
 };
 
 #endif

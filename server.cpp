@@ -6,13 +6,8 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
-#include <string>
-#include <restbed>
 #include "server.hpp"
 #include "Knn.hpp"
-
-using namespace restbed;
-
 
   Server::Server(std::string port, std::string csv_location) {
     if (!is_int(port)) {
@@ -63,145 +58,182 @@ using namespace restbed;
     return newsockfd;
   };
 
-void Server::Read_and_validate_input(int client_sockfd) {
-  char buffer[4096];
+  //read csv from client
+  void Server::Read_csv_recived(int client_sockfd) {
+    std::string temp_data;
+    char buffer[4096];
     // clear the buffer
-  bzero(buffer, 4096);
+    bzero(buffer, 4096);
     // read data from the client
-  int n = recv(client_sockfd, buffer, sizeof(buffer), 0);
-  if (n < 0) {
-    std::cerr << "ERROR reading from socket" << std::endl;
-    exit(1);
-  } else if (n == 0) {
-      this -> disconnect = true;
-  } else {
-    this -> disconnect = false;
-      std::stringstream ss1;
-      ss1 << buffer;
-      std::string temp;
-      while (!ss1.eof())
-      {
-          // for getting each word in the string and converting it into a double
-        ss1 >> temp;
+    while (true) {
+      int n = recv(client_sockfd, buffer, sizeof(buffer), 0);
+      if (n < 0) {
+        std::cerr << "ERROR reading from socket" << std::endl;
+        exit(1);
+      } else if (n == 0) {
+        this -> disconnect = true;
+        break;
+      } else {
+        temp_data.append(buffer, sizeof(buffer));
+      }
+    }
+    this -> csv_recived_temp = temp_data;
+  }
 
-          // make sure we recived a double that dosn't end/start with a dot and is not empty
-        if (is_double(temp))
-        {
-          // push the good value into the vector
-          this -> doubleValues.push_back(stod(temp));
+  //recive algorithem settings from client
+  void Server::recive_algorithem_settings(int client_sockfd) {
+    char buffer[4096];
+    // clear the buffer
+    bzero(buffer, 4096);
+    int n = recv(client_sockfd, buffer, sizeof(buffer), 0);
+    if (n < 0) {
+      std::cerr << "ERROR reading from socket" << std::endl;
+      exit(1);
+    } else if (n == 0) {
+      this -> disconnect = true;
+      break;
+    } else {
+      //put the data from the csv into vector
+      stringstream s(csv_sent);
+      //when there are still data in the row
+      while (getline(s,word,' ')) {
+        if (is_int(word)) {
+          this -> k = stoi(word);
+        } else if (word == "AUC" || word == "MAN" || word == "CHB" || word == "CAN" || word == "MIN") {
+          this->calculation_method = word;
+        } else if (!is_int(word) || stoi(word) < 0){
+            std::string error_message = 'invalid value for K';
+            int n = send(client_sockfd, error_message.c_str(), error_message.size() + 1, 0);
+            if (n < 0) {
+              std::cerr << "ERROR: writing to socket" << std::endl;
+              exit(1);
+            }
         } else {
-          break;
+            std::string error_message = 'invalid value for metric';
+            int n = send(client_sockfd, error_message.c_str(), error_message.size() + 1, 0);
+            if (n < 0) {
+              std::cerr << "ERROR: writing to socket" << std::endl;
+              exit(1);
+            }
         }
       }
-      if (temp == "AUC" || temp == "MAN" || temp == "CHB" || temp == "CAN" || temp == "MIN") {
-          this->calculation_method = temp;
-      } else {
-          this->calculation_method = "invalid";
-      }
-      ss1 >> temp;
-      //make sure its a number with input checks
-      if(is_int(temp)) this -> k = stoi(temp);
-      if(!ss1.eof()) {
-        this -> k = 0;
-      }
-  }
-};
+    }
+  };
 
-void Server::Write_Knn_result(int client_sockfd) {
-  //preform knn
-  vector<data_struct> data = read_data();
-  if (this -> calculation_method == "invalid"  || this -> doubleValues.size() != this -> vector_size_total || this -> k < 1) {
-      std::string bad_input = "invalid input";
-      this ->doubleValues.clear();
-      this ->k = 0;
-      this ->calculation_method = "invalid";
-      int n = send(client_sockfd, bad_input.c_str(), bad_input.size() + 1, 0);
-      if (n < 0) {
-        std::cerr << "ERROR: writing to socket" << std::endl;
-        exit(1);
+  //take every row from the csv into a vector and recive the data with commas in between
+  vector<data_struct> Server::read_data(std::string csv_sent)
+  {
+    //the struct we will return with the data
+    vector<data_struct> data;
+    //the classify
+    string labels = "";
+    string line, word, s;
+    vector<double> tmp;
+    int vector_size = 0;
+    //put the data from the csv into vector
+    stringstream s(csv_sent);
+    //when there are still data in the row
+    while (getline(s,word,','))
+    {
+        if (is_double(word))
+        {
+            tmp.push_back(stod(word));
+            vector_size++;
+            if (this->vector_size_total != 0 && vector_size == this->vector_size_total)
+            {
+              lables = "Needs testing";
+            }
+        }
+        else { //will only occur for the training and not the testing file
+          labels = word;
+          if (this->vector_size_total == 0)
+          {
+              this->vector_size_total = vector_size;
+          }
+          //put the label and the pasrameters in the vector
+          if ((labels == "") || (vector_size != this->vector_size_total))
+          {
+              throw invalid_argument( "Invalid CSV data!" );
+          } 
+        }
+          data_struct temp_struct;
+          temp_struct.label = labels;
+          temp_struct.points = tmp;
+          data.push_back(temp_struct);
+          tmp.clear();
+          labels = "";
+          vector_size = 0;
+    }
+    if(data[0].label == "Needs testing")
+    {
+      this ->csv_recived_testing = this ->csv_recived_temp;
+    } else {
+      this ->csv_recived_learning = this ->csv_recived_temp;
+    }
+    return data;
+  };
+
+  //check if the string can be double
+  bool Server::is_double(const std::string& s) {
+    std::regex double_regex("^[-+]?(0|[1-9][0-9]*)(\\.[0-9]+)?$");
+    return std::regex_match(s, double_regex);
+  }
+  
+  //classifys the testing data
+  void Server::Predict_Knn_result(int client_sockfd) {
+    //if there is no data to test ask for it
+    if (this -> csv_recived_testing == " " || csv_recived_learning == " "){
+      std::string message = 'please upload data';
+    } else {
+      //use learning data and test data
+      this -> recived_learning = read_data(this -> csv_recived_learning);
+      this -> recived_testing = read_data(this -> csv_recived_testing);
+      //build the Knn within loop for every test data
+      for (int i = 0; i < this -> recived_testing.size(); i++) {
+        Knn Knn_calc = Knn(this -> k, this -> recived_testing.points , this -> calculation_method);
+        //run the algorithm
+        Knn_calc.findKnearest(&classified_data);
+        this -> recived_testing[i].label = Knn_calc.predict();
       }
-  } else {
-    //build the Knn
-    Knn Knn_calc = Knn(this -> k, this -> doubleValues , this -> calculation_method);
-    //run the algorithm
-    Knn_calc.findKnearest(&data);
-    std::string prediction = Knn_calc.predict();
+        std::string message = 'classifying data complete';
+    }
     //send data to client
-    int n = send(client_sockfd, prediction.c_str(), prediction.size() + 1, 0);
+    int n = send(client_sockfd, message.c_str(), message.size() + 1, 0);
     if (n < 0) {
       std::cerr << "ERROR: writing to socket" << std::endl;
       exit(1);
     }
-    this ->doubleValues.clear();
-    this ->k = 0;
-    this ->calculation_method = "invalid";
-    }
   };
 
-  //take every row from the csv into a vector
-    vector<data_struct> Server::read_data()
-    {
-        //open the file of csv type and throw exception if not
-        ifstream file(this->csv_location);
-        if(!file) 
-        {
-          throw invalid_argument( "Invalid file location" );
-        } 
-        //the struct we will return with the data
-        vector<data_struct> data;
-        //the classify
-        string labels = "";
-        string line, word, s;
-        vector<double> tmp;
-        int vector_size = 0;
-        //put the data from the csv into vector
-        //when there are still rows in the csv
-        while (file >> line)
-        {
-            labels = "";
-            vector_size = 0;
-            stringstream s(line);
-            //when there are still data in the row
-            while (getline(s,word,','))
-            {
-                if (is_double(word))
-                {
-                    tmp.push_back(stod(word));
-                    vector_size++;
-                }
-                else labels = word;
-            }
-            if (this->vector_size_total == 0)
-            {
-                this->vector_size_total = vector_size;
-            }
-            
-            //put the label and the pasrameters in the vector
-            if ((labels == "") || (vector_size != this->vector_size_total))
-            {
-                throw invalid_argument( "Invalid training data!" );
-            }
-            data_struct temp_struct;
-            temp_struct.label = labels;
-            temp_struct.points = tmp;
-            data.push_back(temp_struct);
-            tmp.clear();
+  //returns the string as it should be printed
+  void Server::Return_prediction(int client_sockfd) {
+    if(this -> recived_testing == NULL) {
+      std::string message = 'please upload data';
+    } else if (this -> recived_testing[i].label == "Needs testing") {
+        std::string message = 'please classify the data';
+    } else {
+      for (int i = 0; i =< this -> recived_testing.size(); i++) {
+        std::string to_print;
+        if (i == this -> recived_testing.size()) {
+          to_print.append("Done.", 7)
+        } else {
+          to_print.append(to_string(i), sizeof(to_string(i)));
+          to_print.append(" ", sizeof(" "));
+          to_print.append(recived_testing[i].label, sizeof(recived_testing[i].label));
+          to_print.append("\n", sizeof("\n"));
         }
-        file.close();
-        return data;
-    };
+      }
+    }
+    int n = send(client_sockfd, to_print.c_str(), to_print.size() + 1, 0);
+    if (n < 0) {
+      std::cerr << "ERROR: writing to socket" << std::endl;
+      exit(1);
+    }
+  }
 
-/*
-    check if the string can be double
-*/
-bool Server::is_double(const std::string& s) {
-  std::regex double_regex("^[-+]?(0|[1-9][0-9]*)(\\.[0-9]+)?$");
-  return std::regex_match(s, double_regex);
-}
-/*
-    check if the string can be int
-*/
-    bool Server::is_int(const std::string& s)
+
+  //check if the string can be int
+  bool Server::is_int(const std::string& s)
     {
     try
     {
@@ -212,4 +244,4 @@ bool Server::is_double(const std::string& s) {
         return false;
     }
     return true;
-};
+  };
