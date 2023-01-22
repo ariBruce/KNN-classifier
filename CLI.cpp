@@ -1,5 +1,6 @@
 
-#include "CLI.h"
+#include "CLI.hpp"
+#include "Command.hpp"
 
 CLI::CLI(DefaultIO *dio) {
     this->dio = dio;
@@ -20,7 +21,7 @@ void CLI::start() {
     while (choice != 8) {
         dio->write("Welcome to the KNN Classifier Server. Please choose an option:\n");
         for (int i = 0; i < allCommands.size(); ++i) {
-            dio->write(allCommands[i]->getDescription());
+            dio->write(to_string(i) + ". " + allCommands[i]->getDescription());
         }
         choice = atoi(dio->read().c_str());
         if (choice < 1 || choice > 5) {
