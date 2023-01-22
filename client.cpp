@@ -37,33 +37,20 @@ void Client::run() {
     if(connect(sock,(struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error connecting server");
     }
-    do {
-    //enter line of text
-    string userInput;
-    getline(cin, userInput);
-    //check if client needs to be closed
-    if (userInput == "-1"){
-        close(sock);
-        break;
+
+        char buffer[4096] = {0};
+        int option;
+    
+    while (true) {
+        // receive message from the server
+        recv(sock, buffer, 4096, 0);
+        std::cout << buffer << std::endl;
+
+        // Read user input
+        std::cin >> option;
+
+        // Send user input to server
+        send(sock, std::to_string(option).c_str(), strlen(std::to_string(option).c_str()), 0);
+
     }
-    //send to server
-    int sent_bytes = send(sock, userInput.c_str(), userInput.size() + 1,  0);
-    if(sent_bytes < 0){
-        perror("error sending bytes");
-    }
-    //recive input back from server
-    char buffer[4096];
-    int expected_data_len = sizeof(buffer);
-    memset(buffer, 0, 4096);
-    int read_bytes = recv(sock, buffer, expected_data_len,0);
-    if(read_bytes == 0) {
-        //conection is closed
-    }
-    else if(read_bytes < 0) {
-        perror("error read bytes");
-    }
-    else {
-       cout << buffer << endl;
-    }
-    } while(true);  
 }

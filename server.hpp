@@ -12,10 +12,14 @@
 
 class Server {
  private:
-  std::string csv_location;
   vector<double> doubleValues;
-  int k = 0;
-  std::string calculation_method;
+  std::string csv_recived_learning;
+  std::string csv_recived_testing;
+  std::string csv_recived_temp;
+  vector<data_struct> recived_learning;
+  vector<data_struct> recived_testing;
+  int k = 5;
+  std::string calculation_method = "AUC";
   int vector_size_total = 0;
   int sockfd;
   int port;
@@ -27,10 +31,12 @@ class Server {
   void Bind();
   void Listen();
   int Accept();
+  void Read_csv_recived(int client_sockfd);
   void Read_and_validate_input(int sockfd);
-  void Write_Knn_result(int sockfd);
+  void Predict_Knn_result(int sockfd);
+  void Return_prediction(int client_sockfd);
   //take the data from the excel and put it into structs into a vector    
-  vector<data_struct> read_data();
+  vector<data_struct> read_data(std::string csv_sent);
   //check if the argument is double
   bool is_double(const std::string& s);
   //check if the argument is int
