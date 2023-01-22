@@ -18,6 +18,7 @@ using namespace std;
 class Receiver{
     public:
     int sock;
+    int rows;
     Receiver(int);
     ~Receiver();
     void Action1();

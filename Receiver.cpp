@@ -21,6 +21,7 @@ using namespace std;
 
 Receiver::Receiver(int sockID = -1){
     sock = sockID;
+    rows = 0; 
 };
 Receiver::~Receiver(){};
 
@@ -46,6 +47,7 @@ void Receiver::readCsv(string csv_location) {
     {
         throw invalid_argument( "Invalid file location" );
     }
+    this->rows = 0;
     string labels = "";
     string line, word, s;
     vector<double> tmp;
@@ -62,6 +64,8 @@ void Receiver::readCsv(string csv_location) {
         //when there are still data in the row
         while (getline(s,word,','))
         {
+            //count the number of rows
+            this->rows = rows+1;
             sent_bytes = send(this->sock, word.c_str(), word.size() + 1,  0);
             if(sent_bytes < 0){
                 perror("error sending bytes");
@@ -164,5 +168,10 @@ void Receiver::classifyCsv(){
 void Receiver::printClassify(){
     //check the situation in the server
     //if there are files and they were classify
-    
+    char buffer[4096] = {0};
+    for (int i = 1; i <= this->rows; i++)
+    {
+        recv(this->sock, buffer, 4096, 0);
+        std::cout << i << buffer << std::endl;
+    }   
 }
