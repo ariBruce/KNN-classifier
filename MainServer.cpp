@@ -1,4 +1,5 @@
 #include <iostream>
+#include <thread>
 #include "server.hpp"
 
 int main(int argc, char const *argv[]) {
@@ -16,21 +17,26 @@ int main(int argc, char const *argv[]) {
     }
   Server server(port, argv[1]);
   server.Bind();
+  server.Listen();
+  std::vector<std::thread> clientThreads;
   while (true) {
-    server.Listen();
-    int client_sockfd = server.Accept();
-    /*//if you wanted the server to disconnect 
-    //after it handled all its connections enter this if statment
+      int clientSocket = server.Accept();
+      server.Send_menu(client_sockfd);
+      server.Read_menu_choice(client_sockfd);
+      clientThreads.emplace_back(handleClient, clientSocket);
+  }
+  int client_sockfd = server.Accept();
+  /*//if you wanted the server to disconnect 
+  //after it handled all its connections enter this if statment
+  if (server.disconnect == true) {
+    break;
+  }*/
+  while (true) {
+    
     if (server.disconnect == true) {
       break;
-    }*/
-    while (true) {
-      server.Read_and_validate_input(client_sockfd);
-      if (server.disconnect == true) {
-        break;
-      }
-      server.Write_Knn_result(client_sockfd);
     }
+    server.Write_Knn_result(client_sockfd);
   }
   return 0;
 }
