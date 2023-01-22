@@ -63,7 +63,7 @@ public:
         this->userID = userID;
     }
 
-    virtual string Read() {
+    string read() {
         std::string temp_data;
         char buffer[4096];
         // clear the buffer
@@ -83,7 +83,7 @@ public:
         return temp_data;
     }
 
-    virtual void write(string text) {
+    void write(string text) {
     //send data to client
     int n = send(userID, text.c_str(), text.size() + 1, 0);
     if (n < 0) {
@@ -92,7 +92,7 @@ public:
     }
     }
 
-    virtual void write(float f) {
+    void write(float f) {
     //send data to client
     int n = send(userID, to_string(f).c_str(), to_string(f).size() + 1, 0);
     if (n < 0) {

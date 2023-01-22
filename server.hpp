@@ -9,7 +9,9 @@
 
 class ClientHandler {
 public:
-    void handle(int clientID) {
+    void *handle(void *arg) {
+        int* p = (int*)arg;
+        int clientID = *p;
         SocketIO sio(clientID);
         CLI cli(&sio);
         cli.start();
@@ -19,18 +21,26 @@ public:
 class Server {
     thread *t; // the thread to run the start() method in
     bool stopRun;
-    int fd;
-    sockaddr_in server;
+    int sockfd;
+    int port;
+    sockaddr_in serv_addr;
     sockaddr_in client;
+    std::vector<std::thread> thread_vector;
 
 public:
-    Server(int port);
+    Server(std::string port);
 
     virtual ~Server();
 
-    void start();
+    void Start(ClientHandler ch);
 
-    void stop();
+    void Stop();
+
+    bool is_int(const std::string& s);
+
+    void Bind();
+
+    void Listen();
 };
 
 #endif /*SERVER_H_ */
