@@ -1,7 +1,6 @@
 #include <iostream>
 #include <thread>
 #include "server.hpp"
-#include "Main_server.hpp"
 
 int main(int argc, char const *argv[]) {
   if (argc != 3) {
@@ -20,6 +19,6 @@ int main(int argc, char const *argv[]) {
   Server server(port);
   server.Bind();
   server.Listen();
-  server.start(&ch); // will run until threads are all shut
-  server.stop();
+  server.Start(ch); // will run until threads are all shut
+  server.Stop();
 }

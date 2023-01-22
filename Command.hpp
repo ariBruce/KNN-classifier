@@ -110,6 +110,7 @@ class Command2 : public Command {
 
   void Validate_algorithem_settings(std::string input) {
     stringstream s(input);
+    std::string word;
     //when there are still data in the row
     while (getline(s,word,' ')) {
       if (is_int(word)) {
@@ -117,19 +118,9 @@ class Command2 : public Command {
       } else if (word == "AUC" || word == "MAN" || word == "CHB" || word == "CAN" || word == "MIN") {
         this->dio.distance_metric = word;
       } else if (!is_int(word) || stoi(word) < 0){
-          std::string error_message = 'invalid value for K';
-          int n = send(this->dio.userID, error_message.c_str(), error_message.size() + 1, 0);
-          if (n < 0) {
-            std::cerr << "ERROR: writing to socket" << std::endl;
-            exit(1);
-          }
+          this->dio->write('invalid value for K');
       } else {
-          std::string error_message = 'invalid value for metric';
-          int n = send(this->dio.userID, error_message.c_str(), error_message.size() + 1, 0);
-          if (n < 0) {
-            std::cerr << "ERROR: writing to socket" << std::endl;
-            exit(1);
-          }
+          this->dio->write('invalid value for metric');
         }
     }
   }
@@ -179,14 +170,14 @@ class Command4 : public Command {
   }
 
   void execute(){
-    if(this -> dio.recived_testing.empty()) {
+    if(this-> dio.recived_testing.empty()) {
       this->dio.write("please upload data");
-    } else if (this -> recived_testing[0].label == "Needs testing") {
+    } else if (this-> recived_testing[0].label == "Needs testing") {
       this->dio.write("please classify the data");
     } else {
-      for (int i = 0; i =< this -> recived_testing.size(); i++) {
-        if (i == this -> recived_testing.size()) {
-          to_print.append("Done.", 7)
+      for (int i = 0; i <= this -> recived_testing.size(); i++) {
+        if (i == this-> recived_testing.size()) {
+          this->dio.write("Done.");
         } else {
           this->dio.write(to_string(i) + " " + recived_testing[i].label);
         }

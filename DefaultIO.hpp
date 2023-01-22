@@ -11,7 +11,7 @@
 using namespace std;
 
 class DefaultIO {
-protected:
+public:
     std::string distance_metric = "AUC";
     vector<data_struct> recived_learning;
     vector<data_struct> recived_testing;

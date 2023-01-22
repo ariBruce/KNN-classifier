@@ -26,6 +26,7 @@ class Knn : public DistancesCalculate
     string predict();
     //the calculate distance by ask
     double distance(vector<double> &vec2);
+    bool is_double(const std::string& s);
 };
 
 #endif

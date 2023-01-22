@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <regex>
 #include "Knn.hpp"
 #include "DistancesCalculate.hpp"
 
@@ -109,3 +110,8 @@ double Knn::distance(vector<double> &vec2)
     //exeption throwing
     else throw std::invalid_argument("INVALID DISTANCE NAME!");
 };
+
+bool Knn::is_double(const std::string& s) {
+  std::regex double_regex("^[-+]?(0|[1-9][0-9]*)(\\.[0-9]+)?$");
+  return std::regex_match(s, double_regex);
+}
