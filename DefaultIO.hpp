@@ -1,5 +1,18 @@
+#include <iostream>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <fstream>
+#include <sstream>
+#include <regex>
+
+using namespace std;
+
 class DefaultIO {
 protected:
+    std::string csv_recived_learning;
+    std::string csv_recived_testing;
     ofstream out;
     ifstream in;
 public:
@@ -8,8 +21,6 @@ public:
     virtual void write(string text) = 0;
 
     virtual void write(float f) = 0;
-
-    virtual void read(float *f) = 0;
 
     virtual ~DefaultIO() {}
 
@@ -49,23 +60,24 @@ public:
         this->userID = userID;
     }
 
-    virtual string read() {
-        string serverInput = "";
-        char c = 0;
-        int n = recv(userID, &c, sizeof(char), 0);
+    virtual string Read() {
+        std::string temp_data;
+        char buffer[4096];
+        // clear the buffer
+        bzero(buffer, 4096);
+        // read data from the client
+        while (true) {
+        int n = recv(userID, buffer, sizeof(buffer), 0);
         if (n < 0) {
-        std::cerr << "ERROR reading from socket" << std::endl;
-        exit(1);
+            std::cerr << "ERROR reading from socket" << std::endl;
+            exit(1);
+        } else if (n == 0) {
+            break;
+        } else {
+            temp_data.append(buffer, sizeof(buffer));
         }
-        while (c != '\n') {
-            serverInput += c;
-            n = recv(userID, &c, sizeof(char), 0);
-            if (n < 0) {
-                std::cerr << "ERROR reading from socket" << std::endl;
-                exit(1);
-            }
         }
-        return serverInput;
+        return temp_data;
     }
 
     virtual void write(string text) {
@@ -86,6 +98,4 @@ public:
     }
     }
 
-    virtual void read(float *f) {
-    }
 };

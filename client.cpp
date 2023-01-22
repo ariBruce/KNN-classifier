@@ -38,8 +38,8 @@ void Client::run() {
         perror("error connecting server");
     }
 
-        char buffer[4096] = {0};
-        int option;
+    char buffer[4096] = {0};
+    int option;
     
     while (true) {
         // receive message from the server

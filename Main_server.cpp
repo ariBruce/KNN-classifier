@@ -1,6 +1,7 @@
-#include "Server.h"
 
-Server::Server(std::string port) {
+#include "Main_server.hpp"
+
+Main_server::Main_server(std::string port) {
     stopRun = false;
     if (!is_int(port)) {
         std::cerr << "ERROR: no port provided" << std::endl;
@@ -19,7 +20,7 @@ Server::Server(std::string port) {
     }
 }
 
-void Server::start(ClientHandler &ch) throw(const char *) {
+void Main_server::start(ClientHandler &ch) throw(const char *) {
     t = new thread([&ch, this]() {
         while (!stopRun) {
             cout << "Waiting for a client" << endl;
@@ -38,11 +39,11 @@ void Server::start(ClientHandler &ch) throw(const char *) {
     });
 }
 
-void Server::stop() {
+void Main_server::stop() {
     stopRun = true;
     t->join(); // do not delete this!
 }
 
-Server::~Server() {
+Main_server::~Main_server() {
     delete this->t;
 }
