@@ -36,7 +36,11 @@ void Receiver::Action3(){
     this->classifyCsv();
 }
 void Receiver::Action4(){
+    this->printClassify();
 
+}
+void Receiver::Action5(){
+    this->saveClassify();
 }
 
 
@@ -172,6 +176,30 @@ void Receiver::printClassify(){
     for (int i = 1; i <= this->rows; i++)
     {
         recv(this->sock, buffer, 4096, 0);
-        std::cout << i << buffer << std::endl;
+        std::cout << i << " " << buffer << std::endl;
     }   
+}
+void Receiver::saveClassify(){
+    string path = "";
+    //need to check what is the correct cout
+    std::cout<<"please write the path of file"
+    std::cin>> path;
+    std::filesystem::path filepath = path;
+    bool filepathExists = std::filesystem::is_directory(filepath.parent_path());
+    ofstream write_to_file;
+    write_to_file.open(path);
+    if (filepathExists && write_to_file.is_open())
+    {
+        char buffer[4096] = {0};
+        for (int i = 1; i <= this->rows; i++)
+        {
+            recv(this->sock, buffer, 4096, 0);
+            write_to_file << i << " " << buffer << "\n";
+        }  
+    }
+    
+    //check the situation in the server
+    //if there are files and they were classify
+ 
+    
 }

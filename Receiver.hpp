@@ -25,6 +25,7 @@ class Receiver{
     void Action2();
     void Action3();
     void Action4();
+    void Action5();
     void readCsv(string csv_location);
     bool is_int(const std::string& s);
     bool is_metType(const std::string& s);
@@ -33,6 +34,7 @@ class Receiver{
     void serverData();
     void classifyCsv();
     void printClassify();
+    void saveClassify();
 };
 
 #endif
