@@ -13,21 +13,18 @@ class CLI {
     DefaultIO *dio;
     vector<data_struct> recived_learning;
     vector<data_struct> recived_testing;
-    //add all kinds of commands.
-    //AlgoSettingCommand *settingCom;
-    //AnomalyDetectCommand *detectionCom;
-    //AnalyzeCommand *analyzeCom;
-    //ExitCommand *exitCommand;
-    //ShowResultsCommand *resultsCom;
-    //UploadCommand *uploadCom;
+    //all of commands
+    Command1 *Com1(dio);
+    Command2 *Com2(dio);
+    Command3 *Com3(dio);
+    Command4 *Com4(dio);
+    //Command5 *Com5(dio);
     vector<Command *> allCommands;
     // you can add data members
 public:
     CLI(DefaultIO *dio);
 
     void start();
-
-    vector<data_struct> read_data(std::string csv_sent);
 
     virtual ~CLI();
 };
