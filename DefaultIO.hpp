@@ -6,13 +6,16 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
+#include "Knn.hpp"
 
 using namespace std;
 
 class DefaultIO {
 protected:
-    std::string csv_recived_learning;
-    std::string csv_recived_testing;
+    std::string distance_metric = "AUC";
+    vector<data_struct> recived_learning;
+    vector<data_struct> recived_testing;
+    int k = 5;
     ofstream out;
     ifstream in;
 public:

@@ -12,7 +12,7 @@ using namespace std;
 class CLI {
     DefaultIO *dio;
     vector<data_struct> recived_learning;
-    vector<data_struct> recived_testing;;
+    vector<data_struct> recived_testing;
     //add all kinds of commands.
     //AlgoSettingCommand *settingCom;
     //AnomalyDetectCommand *detectionCom;
