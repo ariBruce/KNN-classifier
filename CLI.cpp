@@ -29,3 +29,11 @@ void CLI::start() {
         allCommands.at(choice - 1)->execute();
     }
 }
+
+CLI::~CLI() {
+    delete Com1;
+    delete Com2;
+    delete Com3;
+    delete Com4;
+    //delete Com5;
+}
