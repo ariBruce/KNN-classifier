@@ -1,5 +1,8 @@
 #ifndef Command_H_
 #define Command_H_
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include "Knn.hpp"
 
 class Command {
@@ -8,12 +11,14 @@ class Command {
     std::string Description = "empty";  //description of the command in the menu.
     std::string down = "\n";
   public:
-    Command(DefaultIO* dio):dio(dio){}
+    Command(DefaultIO* dio){
+      this ->dio = dio;
+    }
 
     virtual void execute() = 0;
 
     string getDescription() {
-      return this->commandDescrip;
+      return this->Description;
     }
 
     virtual ~Command() {}
@@ -21,7 +26,7 @@ class Command {
 
 class Command1 : public Command {
   Command1(DefaultIO* dio){
-      this ->dio = dio;
+      this->dio = dio;
       this->Description = "upload an unclassified csv data file";
   }
 

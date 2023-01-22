@@ -1,6 +1,7 @@
 
 #include "CLI.hpp"
 #include "Command.hpp"
+#include "DefaultIO.hpp"
 
 CLI::CLI(DefaultIO *dio) {
     this->dio = dio;
