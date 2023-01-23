@@ -5,15 +5,15 @@
 
 CLI::CLI(DefaultIO *dio) {
     this->dio = dio;
-    this->Com1 = new Command1(dio);
-    this->Com2 = new Command2(dio);
-    this->Com3 = new Command3(dio);
-    this->Com4 = new Command4(dio);
+    this->Com1 = Command1(dio);
+    this->Com2 = Command2(dio);
+    this->Com3 = Command3(dio);
+    this->Com4 = Command4(dio);
     //this->Com5 = new Command5(dio);
-    this->allCommands.push_back(Com1);
-    this->allCommands.push_back(Com2);
-    this->allCommands.push_back(Com3);
-    this->allCommands.push_back(Com4);
+    this->allCommands.push_back(this->Com1);
+    this->allCommands.push_back(*Com2);
+    this->allCommands.push_back(*Com3);
+    this->allCommands.push_back(*Com4);
     //this->allCommands.push_back(Com5);
 }
 

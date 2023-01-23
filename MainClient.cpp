@@ -1,6 +1,6 @@
 #include <iostream>
 #include <regex>
-#include "client.hpp"
+#include "Client.hpp"
 
 int main(int argc, char* argv[]){
     if (argc != 3)

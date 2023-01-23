@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-#include "client.hpp"
+#include "Client.hpp"
 using namespace std;
 
 
