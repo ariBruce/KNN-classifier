@@ -9,7 +9,7 @@
 
 
 class ClientHandler {
-public:
+  public:
     void *handle(void *arg) {
         int* p = (int*)arg;
         int clientID = *p;

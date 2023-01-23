@@ -1,4 +1,3 @@
-
 #include "CLI.hpp"
 #include "Command.hpp"
 #include "DefaultIO.hpp"
@@ -8,7 +7,7 @@
 #include "Command4.hpp"
 using namespace std;
 
-CLI::CLI(DefaultIO* dio) {
+CLI::CLI(DefaultIO* dio){
     this->dio = dio;
     this->Com1 = Command1(dio);
     this->Com2 = Command2(dio);
@@ -29,7 +28,7 @@ CLI::CLI(DefaultIO* dio) {
 void CLI::start() {
     int choice = 0;
     while (choice != 8) {
-        dio->write("Welcome to the KNN Classifier Server. Please choose an option:\n");
+        this->dio->write("Welcome to the KNN Classifier Server. Please choose an option:\n");
         for (int i = 0; i < allCommands.size(); ++i) {
             dio->write(to_string(i) + ". " + allCommands[i]->getDescription());
         }

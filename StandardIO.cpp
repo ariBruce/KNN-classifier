@@ -27,6 +27,10 @@ in >> str;
 return str;
 }
 
+void StandardIO::read(float *f) {
+in >> *f;
+}
+
 void StandardIO::write(string text) {
 out << text;
 }
@@ -35,6 +39,3 @@ void StandardIO::write(float f) {
 out << f;
 }
 
-void StandardIO::read(float *f) {
-in >> *f;
-}

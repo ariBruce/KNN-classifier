@@ -5,7 +5,10 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+#include <string>
 #include "Client.hpp"
+#include "CLI.hpp"
+#include "SocketIO.hpp"
 using namespace std;
 
 
@@ -37,20 +40,6 @@ void Client::run() {
     if(connect(sock,(struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error connecting server");
     }
-
-    char buffer[4096] = {0};
-    int option;
-    
-    while (true) {
-        // receive message from the server
-        recv(sock, buffer, 4096, 0);
-        std::cout << buffer << std::endl;
-
-        // Read user input
-        std::cin >> option;
-
-        // Send user input to server
-        send(sock, std::to_string(option).c_str(), strlen(std::to_string(option).c_str()), 0);
-
-    }
+    SocketIO *sdio = new SocketIO(sock);
+    CLI *cli_client = new CLI(sdio);
 }
