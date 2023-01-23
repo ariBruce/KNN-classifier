@@ -18,8 +18,6 @@ class Command1 : public Command
     int vector_size_total;
     vector<data_struct> transfer_data(std::string csv_sent);
     void execute();
-
-
 };
 
 #endif
