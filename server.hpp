@@ -5,6 +5,7 @@
 #include <thread>
 #include "CLI.hpp"
 #include "DefaultIO.hpp"
+#include "SocketIO.hpp"
 
 
 class ClientHandler {

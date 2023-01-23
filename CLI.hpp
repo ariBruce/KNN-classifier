@@ -7,6 +7,10 @@
 #include "Command.hpp"
 #include "Knn.hpp"
 #include "DefaultIO.hpp"
+#include "Command1.hpp"
+#include "Command2.hpp"
+#include "Command3.hpp"
+#include "Command4.hpp"
 
 using namespace std;
 
@@ -14,7 +18,7 @@ class CLI {
     DefaultIO *dio;
     vector<data_struct> recived_learning;
     vector<data_struct> recived_testing;
-    vector<Command *> allCommands;
+    vector<Command*> allCommands;
     Command1 Com1;
     Command2 Com2;
     Command3 Com3;
@@ -22,7 +26,7 @@ class CLI {
 
     // you can add data members
 public:
-    CLI(DefaultIO *dio);
+    CLI(DefaultIO*);
 
     void start();
 
