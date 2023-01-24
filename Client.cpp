@@ -79,5 +79,5 @@ void Client::run() {
     }
     if(option == "4") {
         this->sodio->read(); //print the classification
-    }   
+    }      
 }
