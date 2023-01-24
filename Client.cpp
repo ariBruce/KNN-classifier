@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <string>
+#include <fstream>
+#include <sstream>
 #include "Client.hpp"
 #include "SocketIO.hpp"
 #include "StandardIO.hpp"
@@ -43,4 +45,39 @@ void Client::run() {
     }
     this->sodio = new SocketIO(sock);
     this->stadio = new StandardIO();
+
+    this->sodio->read();
+    std::string option = this->stadio->read();
+    this->sodio->write(option);
+    if(option == "1") {
+        this->sodio->read(); //request to upload train file path
+        std::string path_train = this->stadio->read();
+        ifstream file_train(path_train);
+        std::string line;
+        while(file_train >> line) {
+            this->sodio->write(line);
+        }
+        file_train.close();
+        this->sodio->read(); //compleation message
+        this->sodio->read(); //request to upload test file path
+        std::string path_test = this->stadio->read();
+        ifstream file_test(path_test);
+        std::string line;
+        while(file_train >> line) {
+            this->sodio->write(line);
+        }
+        file_test.close();
+        this->sodio->read(); //compleation message
+    }
+    if(option == "2") {
+        
+    }
+    if(option == "3") {
+        
+    }
+    if(option == "4") {
+        
+    }
+    
+    
 }
