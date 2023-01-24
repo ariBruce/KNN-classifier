@@ -14,7 +14,7 @@ public:
     std::string distance_metric = "null";
     vector<data_struct> recived_learning;
     vector<data_struct> recived_testing;
-    int k = 5;
+    int k = NULL;
     ofstream out;
     ifstream in;
 public:

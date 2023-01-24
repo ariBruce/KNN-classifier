@@ -33,7 +33,7 @@ string SocketIO::read() {
             temp_data.append(buffer, sizeof(buffer));
         }
     }
-        return temp_data;
+    return temp_data;
 }
 
 void SocketIO::write(string text) {

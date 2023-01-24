@@ -12,11 +12,12 @@
 
 class Command1 : public Command
 {
+    int vector_size_total;
     public:
     Command1(DefaultIO*);
     ~Command1();
     int vector_size_total;
-    vector<data_struct> transfer_data(std::string csv_sent);
+    vector<data_struct> transfer_data(std::string csv_sent, std::string file_type);
     void execute();
 };
 

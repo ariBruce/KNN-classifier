@@ -7,8 +7,9 @@
 #include <string.h>
 #include <string>
 #include "Client.hpp"
-#include "CLI.hpp"
 #include "SocketIO.hpp"
+#include "StandardIO.hpp"
+
 using namespace std;
 
 
@@ -40,6 +41,6 @@ void Client::run() {
     if(connect(sock,(struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error connecting server");
     }
-    SocketIO *sdio = new SocketIO(sock);
-    CLI *cli_client = new CLI(sdio);
+    this->sodio = new SocketIO(sock);
+    this->stadio = new StandardIO();
 }

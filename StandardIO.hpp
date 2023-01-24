@@ -14,7 +14,8 @@
 
 
 class StandardIO : public DefaultIO {
-    StandardIO(string, string);
+    public:
+    StandardIO();
     ~StandardIO();
     string read();
     void read(float *f);

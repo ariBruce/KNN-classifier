@@ -25,12 +25,12 @@ class CLI {
     Command4 Com4;
 
     // you can add data members
-public:
+    public:
     CLI(DefaultIO*);
 
     void start();
 
-    virtual ~CLI();
+    ~CLI();
 };
 
 #endif /*CLI_H_*/

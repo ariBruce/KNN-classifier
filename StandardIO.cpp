@@ -13,29 +13,30 @@
 
 using namespace std;
 
-StandardIO::StandardIO(string inputFile, string outputFile) {
-in.open(inputFile);
-out.open(outputFile);
+StandardIO::StandardIO() {
+    string inputFile, outputFile;
+    in.open(inputFile);
+    out.open(outputFile);
 }
 StandardIO::~StandardIO(){
 
 }
 
 string StandardIO::read() {
-string str;
-in >> str;
-return str;
+    string str;
+    in >> str;
+    return str;
 }
 
 void StandardIO::read(float *f) {
-in >> *f;
+    in >> *f;
 }
 
 void StandardIO::write(string text) {
-out << text;
+    out << text;
 }
 
 void StandardIO::write(float f) {
-out << f;
+    out << f;
 }
 

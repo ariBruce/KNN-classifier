@@ -7,7 +7,7 @@
 #include "Command4.hpp"
 using namespace std;
 
-CLI::CLI(DefaultIO* dio){
+CLI::CLI(DefaultIO* dio) {
     this->dio = dio;
     this->Com1 = Command1(dio);
     this->Com2 = Command2(dio);

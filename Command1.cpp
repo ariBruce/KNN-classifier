@@ -16,6 +16,7 @@ using namespace std;
 Command1::Command1(DefaultIO* dio) : Command(dio){
     this->dio = dio;
     this->Description = "upload an unclassified csv data file";
+    this->vector_size_total = 0;
 }
 
 Command1::~Command1()
@@ -30,7 +31,7 @@ Command1::~Command1()
   }
   */
 
-vector<data_struct> Command1::transfer_data(std::string csv_sent) {
+vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string file_type) {
   //the struct we will return with the data
   vector<data_struct> data;
   //the classify
@@ -47,15 +48,19 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent) {
       {
           tmp.push_back(stod(word));
           vector_size++;
-          if (this->vector_size_total != 0 && vector_size == this->vector_size_total)
+          //אני חושבת שהאלס הזה צריך לבוא אחרי האיף של הליבלס ולא אחרי האיף של איז דאבל
+      } else { //will only occur for the training and not the testing file
+          //או שזה בעצם לא צריך להיות בפנים של האיף אלא של האלס
+          //if there is no classify
+          if (this->vector_size_total != 0 && vector_size == this->vector_size_total && file_type == "test")
           {
               labels = "Needs testing";
-          }
-      } else { //will only occur for the training and not the testing file
-          labels = word;
-          if (this->vector_size_total == 0)
-          {
-              this->vector_size_total = vector_size;
+          } else if(file_type == "train"){
+            labels = word;
+            if (this->vector_size_total == 0)
+            {
+                this->vector_size_total = vector_size;
+            }
           }
           //put the label and the pasrameters in the vector
           if ((labels == "") || (vector_size != this->vector_size_total))
@@ -76,9 +81,9 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent) {
 
 void Command1::execute(){
   this->dio->write("Please upload your local train CSV file.");
-  this->dio->recived_learning = transfer_data(this->dio->read());
+  this->dio->recived_learning = transfer_data(this->dio->read(), "train");
   this->dio->write("Upload complete.");
   this->dio->write("Please upload your local test CSV file.");
-  this->dio->recived_testing = transfer_data(this->dio->read());
+  this->dio->recived_testing = transfer_data(this->dio->read(), "test");
   this->dio->write("Upload complete.");
 };
