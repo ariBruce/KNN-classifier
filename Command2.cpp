@@ -23,33 +23,33 @@ Command2::~Command2()
 }
 
 void Command2::Validate_algorithem_settings(std::string input) {
-stringstream s(input);
-std::string word;
-int input_members = 0;
-//when there are still data in the row
-while (getline(s,word,' ')) {
-    input_members += 1;
-    if(input_members > 2) {
-        this->dio->k = NULL;
-        this->dio->distance_metric = "null";
-        this->dio->write('invalid input');
-    }
-    //check if we get K value
-    if (this->is_int(word)) {
-        if(stoi(word) > 0){
-            this->dio->k = stoi(word);
-        }else {
-            this->dio->write('invalid value for K');
+    stringstream s(input);
+    std::string word;
+    int input_members = 0;
+    //when there are still data in the row
+    while (getline(s,word,' ')) {
+        input_members += 1;
+        if(input_members > 2) {
+            this->dio->k = NULL;
+            this->dio->distance_metric = "null";
+            this->dio->write('invalid input');
         }
-    //check the type of calculation
-    } else if (word == "AUC" || word == "MAN" || word == "CHB" || word == "CAN" || word == "MIN") {
-        this->dio->distance_metric = word;
-    } else if (!this->is_int(word)){
-        this->dio->write('invalid value for K');
-    } else {
-        this->dio->write('invalid value for metric');
+        //check if we get K value
+        if (this->is_int(word)) {
+            if(stoi(word) > 0){
+                this->dio->k = stoi(word);
+            }else {
+                this->dio->write('invalid value for K');
+            }
+        //check the type of calculation
+        } else if (word == "AUC" || word == "MAN" || word == "CHB" || word == "CAN" || word == "MIN") {
+            this->dio->distance_metric = word;
+        } else if (!this->is_int(word)){
+            this->dio->write('invalid value for K');
+        } else {
+            this->dio->write('invalid value for metric');
+        }
     }
-}
 }
 
 void Command2::execute(){

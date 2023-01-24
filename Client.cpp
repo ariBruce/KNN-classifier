@@ -49,6 +49,7 @@ void Client::run() {
     this->sodio->read();
     std::string option = this->stadio->read();
     this->sodio->write(option);
+    //The options:
     if(option == "1") {
         this->sodio->read(); //request to upload train file path
         std::string path_train = this->stadio->read();
@@ -70,14 +71,13 @@ void Client::run() {
         this->sodio->read(); //compleation message
     }
     if(option == "2") {
-        
+        this->sodio->read(); //print the params values of K and calculate type
+        this->stadio->read();//takes new params values of K and calculate type
     }
     if(option == "3") {
-        
+        this->sodio->read(); //print that the files were classificate or a problen messeage
     }
     if(option == "4") {
-        
-    }
-    
-    
+        this->sodio->read(); //print the classification
+    }   
 }
