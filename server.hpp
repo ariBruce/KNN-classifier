@@ -31,7 +31,7 @@ class Server {
 public:
     Server(std::string port);
 
-    virtual ~Server();
+    ~Server();
 
     void Start(ClientHandler ch);
 

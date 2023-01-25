@@ -5,6 +5,7 @@
 #include <sstream>
 #include <regex>
 #include <string.h>
+#include "StandardIO.hpp"
 #include "DefaultIO.hpp"
 #include "Knn.hpp"
 

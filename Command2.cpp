@@ -30,7 +30,7 @@ void Command2::Validate_algorithem_settings(std::string input) {
     while (getline(s,word,' ')) {
         input_members += 1;
         if(input_members > 2) {
-            this->dio->k = NULL;
+            this->dio->k = -1;
             this->dio->distance_metric = "null";
             this->dio->write('invalid input');
         }

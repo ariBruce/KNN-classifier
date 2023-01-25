@@ -7,7 +7,6 @@
 #include <sstream>
 #include <regex>
 #include "Knn.hpp"
-#include "DefaultIO.hpp"
 #include "SocketIO.hpp"
 using namespace std;
 
@@ -53,3 +52,5 @@ void SocketIO::write(float f) {
         exit(1);
     }
 }
+
+SocketIO::~SocketIO() {}

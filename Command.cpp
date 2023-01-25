@@ -3,7 +3,6 @@
 #include <sstream>
 #include <regex>
 #include <string.h>
-#include "DefaultIO.hpp"
 #include "Knn.hpp"
 #include "Command.hpp"
 

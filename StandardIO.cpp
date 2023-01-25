@@ -7,7 +7,6 @@
 #include <sstream>
 #include <regex>
 #include "Knn.hpp"
-#include "DefaultIO.hpp"
 #include "StandardIO.hpp"
 
 

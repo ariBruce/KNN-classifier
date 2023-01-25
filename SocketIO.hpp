@@ -11,15 +11,14 @@
 #include <regex>
 #include "Knn.hpp"
 #include "DefaultIO.hpp"
-using namespace std;
 
 class SocketIO : public DefaultIO {
     int userID;
     public:
     SocketIO(int);
     ~SocketIO();
-    string read();
-    void write(string text);
+    std::string read();
+    void write(std::string text);
     void write(float f);
 
 };
