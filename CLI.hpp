@@ -26,6 +26,8 @@ class CLI {
 
     void start();
 
+    void print_menu();
+
     ~CLI();
 };
 

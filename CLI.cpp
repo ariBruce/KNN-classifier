@@ -18,23 +18,31 @@ CLI::CLI(DefaultIO* dio)
 
 void CLI::start() {
     int choice = 0;
-    std::cout << "we are sending a menu\n";
     while (choice != 8) {
-        this->dio->write("Welcome to the KNN Classifier Server. Please choose an option:\n");
-        for (int i = 0; i < allCommands.size(); ++i) {
-            std::cout << "in the loop\n";
-            this->dio->write(to_string(i+1) + ". " + allCommands[i]->getDescription() + "\n");
-        }
+        print_menu();
         try {
-        int choice = atoi(this->dio->read().c_str());
+        std::string input_choice = dio->read();
+        std::cout << input_choice;
+        int choice = stoi(input_choice);
+        std::cout << choice;
         } catch(...){
+            std::cout << "choice\n";
             this->dio->write("invalid input");
         }
         if (choice < 1 || choice > 5) {
             continue;
         }
-        allCommands.at(choice - 1)->execute();
+        std::cout << choice + "\n";
+        allCommands[choice - 1]->execute();
     }
+}
+
+void CLI::print_menu() {
+    std::string menu = "Welcome to the KNN Classifier Server. Please choose an option:\n";
+    for (int i = 0; i < allCommands.size(); ++i) {
+        menu = menu + (to_string(i+1) + ". " + allCommands[i]->getDescription() + "\n");
+    }
+    this->dio->write(menu);
 }
 
 CLI::~CLI() {

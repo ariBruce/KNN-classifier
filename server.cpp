@@ -48,7 +48,6 @@ void Server::Start() {
           std::cerr << "Error accepting client connection" << std::endl;
           continue;
       }
-      std::cout << "we are connected\n";
       //create a new thread for the client
       std::thread threadObj(std::bind(&Server::handle, this, client_fd));
       //add the thread to the list of client threads
@@ -83,8 +82,7 @@ bool Server::is_int(const std::string& s)
 };
 
 void Server::handle(int clientID){
-        std::cout << "we are threading\n";
-        SocketIO sio(clientID);
-        CLI cli(&sio);
-        cli.start();
+  SocketIO sio(clientID);
+  CLI cli(&sio);
+  cli.start();
 };

@@ -16,34 +16,34 @@ SocketIO::SocketIO(int userID) {
 }
 
 string SocketIO::read() {
-    std::string temp_data;
-    char buffer[4096];
+    std::string temp_data = "";
+    char buffer = 0;
     // clear the buffer
     // read data from the client
-    while (true) {
-        memset(buffer,0,sizeof(buffer));
-        int n = recv(userID, buffer, sizeof(buffer), 0);
+    while (buffer != '$') {
+        int n = recv(userID, &buffer, sizeof(char), 0);
         if (n < 0) {
             std::cerr << "ERROR reading from socket" << std::endl;
             exit(1);
-        } else if (n == 0) {
-            break;
         } else {
-            std::cout << buffer;
-            temp_data.append(buffer, sizeof(buffer));
+            temp_data += buffer;
         }
     }
+    buffer = 0;
     return temp_data;
 }
 
 void SocketIO::write(string text) {
 //send data to client
-int n = send(userID, text.c_str(), text.size() + 1, 0);
-    if (n < 0) {
-        std::cerr << "ERROR: writing to socket" << std::endl;
-        exit(1);
+    text += "$";
+    if ( text != "$") {
+        int n = send(userID, text.c_str(), text.size() + 1, 0);
+            if (n < 0) {
+                std::cerr << "ERROR: writing to socket" << std::endl;
+                exit(1);
+            }
+        text.clear();
     }
-    text.clear();
 }
 
 void SocketIO::write(float f) {
