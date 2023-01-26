@@ -15,9 +15,6 @@
 #include "CLI.hpp"
 #include "DefaultIO.hpp"
 #include "SocketIO.hpp"
-#include "ClientHandler.hpp"
-
-
 
 
 class Server {
@@ -43,6 +40,8 @@ public:
     void Bind();
 
     void Listen();
+
+    void handle(void *arg);
 };
 
 #endif /*SERVER_H_ */

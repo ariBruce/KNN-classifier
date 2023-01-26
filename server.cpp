@@ -39,7 +39,7 @@
     listen(this-> sockfd, 5);
   };
 
-  void Server::Start(ClientHandler ch) {
+  void Server::Start() {
     while (true) {
         //accept a new client connection
         int client_fd = accept(this->sockfd, nullptr, nullptr);
@@ -80,3 +80,11 @@ bool Server::is_int(const std::string& s)
   }
   return true;
 };
+
+void Server::handle(void *arg){
+        int* p = (int*)arg;
+        int clientID = *p;
+        SocketIO sio(clientID);
+        CLI cli(&sio);
+        cli.start();
+}
