@@ -25,7 +25,11 @@ void CLI::start() {
             std::cout << "in the loop\n";
             this->dio->write(to_string(i+1) + ". " + allCommands[i]->getDescription() + "\n");
         }
-        choice = atoi(dio->read().c_str());
+        try {
+        int choice = atoi(this->dio->read().c_str());
+        } catch(...){
+            this->dio->write("invalid input");
+        }
         if (choice < 1 || choice > 5) {
             continue;
         }
@@ -34,4 +38,7 @@ void CLI::start() {
 }
 
 CLI::~CLI() {
+    for (int i = 0; i < allCommands.size(); ++i) {
+        delete allCommands[i];
+        }
 }

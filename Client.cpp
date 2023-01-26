@@ -23,6 +23,8 @@ Client::Client(string ip, string port)
 
 Client::~Client()
 {
+    delete this->sodio;
+    delete this->stadio;
 }
 
 void Client::run() {

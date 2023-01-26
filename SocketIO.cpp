@@ -19,9 +19,9 @@ string SocketIO::read() {
     std::string temp_data;
     char buffer[4096];
     // clear the buffer
-    bzero(buffer, 4096);
     // read data from the client
     while (true) {
+        memset(buffer,0,sizeof(buffer));
         int n = recv(userID, buffer, sizeof(buffer), 0);
         if (n < 0) {
             std::cerr << "ERROR reading from socket" << std::endl;
@@ -30,7 +30,6 @@ string SocketIO::read() {
             break;
         } else {
             std::cout << buffer;
-            bzero(buffer, 4096);
             temp_data.append(buffer, sizeof(buffer));
         }
     }
@@ -44,6 +43,7 @@ int n = send(userID, text.c_str(), text.size() + 1, 0);
         std::cerr << "ERROR: writing to socket" << std::endl;
         exit(1);
     }
+    text.clear();
 }
 
 void SocketIO::write(float f) {
