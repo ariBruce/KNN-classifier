@@ -15,10 +15,9 @@ int main(int argc, char const *argv[]) {
     if(stoi(port) > 65536 || stoi(port) < 1023){
         throw invalid_argument( "invalid port" );
     }
-  ClientHandler ch;
   Server server(port);
   server.Bind();
   server.Listen();
-  server.Start(ch); // will run until threads are all shut
+  server.Start(); // will run until threads are all shut
   server.Stop();
 }

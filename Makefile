@@ -2,13 +2,14 @@
 CC = g++
 CFLAGS = -std=c++11
 
+
 both: client.out server.out
 
 client.out: MainClient.o Client.o SocketIO.o StandardIO.o
 	$(CC) $(LDFLAGS) MainClient.o Client.o SocketIO.o StandardIO.o -o client.out
 
 server.out: DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o 
-	$(CC) $(CFLAGS) DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o -o server.out
+	$(CC) $(CFLAGS) DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o -o server.out -pthread
 
 Client.o: Client.cpp
 	$(CC) $(CFLAGS) -c Client.cpp -o Client.o

@@ -11,6 +11,9 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
+#include <functional>
+
+
 #include "Knn.hpp"
 #include "CLI.hpp"
 #include "DefaultIO.hpp"
@@ -25,6 +28,7 @@ class Server {
     sockaddr_in serv_addr;
     sockaddr_in client;
     std::vector<std::thread> thread_vector;
+    //std::vector<std::unique_ptr<std::thread>> thread_vector;
 
 public:
     Server(std::string port);
@@ -41,7 +45,7 @@ public:
 
     void Listen();
 
-    void handle(void *arg);
+    void handle(int clientID);
 };
 
 #endif /*SERVER_H_ */
