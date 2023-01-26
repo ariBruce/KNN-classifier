@@ -3,8 +3,8 @@
 #include "server.hpp"
 
 int main(int argc, char const *argv[]) {
-  if (argc != 3) {
-    std::cerr << "not enough arguments";
+  if (argc != 2) {
+    throw invalid_argument("not enough arguments");
   }
   std::string port = argv[1];
   try {
