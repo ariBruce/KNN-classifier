@@ -3,6 +3,7 @@
 #include <sstream>
 #include <regex>
 #include <string.h>
+#include <regex>
 #include "Knn.hpp"
 #include "Command.hpp"
 
@@ -24,17 +25,9 @@ bool Command::is_double(const std::string& s) {
 };
 
 //check if the string can be int
-bool Command::is_int(const std::string& s)
-    {
-    try
-    {
-        std::stoi(s);
-    }
-    catch(...)
-    {
-        return false;
-    }
-    return true;
+bool Command::is_int(const std::string& s) {
+    std::regex int_regex("^[0-9]?$");
+    return std::regex_match(s, int_regex);
 };
 
 Command::~Command() {};

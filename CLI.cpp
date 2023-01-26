@@ -20,17 +20,16 @@ void CLI::start() {
     int choice = 0;
     while (choice != 8) {
         print_menu();
-        try {
         std::string input_choice = dio->read();
-        choice = stoi(input_choice);
+        try {
+            choice = stoi(input_choice);
         } catch(...){
             this->dio->write("invalid input");
         }
         if (choice < 1 || choice > 5) {
             continue;
         }
-        std::cout << choice + "\n";
-        allCommands[choice - 1]->execute();
+        allCommands.at(choice - 1)->execute();
     }
 }
 

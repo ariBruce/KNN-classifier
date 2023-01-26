@@ -74,11 +74,15 @@ void Client::run() {
         this->sodio->read(); //compleation message
     }
     if(option == "2") {
-        this->sodio->read(); //print the params values of K and calculate type
-        this->stadio->read();//takes new params values of K and calculate type
+        std::string output_2 = this->sodio->read(); //print the params values of K and calculate type
+        this->stadio->write(output_2); //write the output
+        std::string new_params = this->stadio->read();//takes new params values of K and calculate type
+        this->sodio->write(new_params); //send paramaters
+        this->sodio->read(); //recive the new params values of K and calculate type
     }
     if(option == "3") {
-        this->sodio->read(); //print that the files were classificate or a problen messeage
+        std::string output_3 = this->sodio->read(); //read that the files were classificate or a problen messeage
+        this->stadio->write(output_3); //write the output
     }
     if(option == "4") {
         this->sodio->read(); //print the classification

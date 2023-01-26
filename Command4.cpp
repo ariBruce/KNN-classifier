@@ -13,6 +13,7 @@ using namespace std;
   }
 
   void Command4::execute(){
+    std::cout << "8";
     if(this->dio->recived_testing.empty()) {
       this->dio->write("please upload data");
     } else if (this->dio->recived_testing[0].label == "Needs testing") {

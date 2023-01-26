@@ -14,10 +14,10 @@ using namespace std;
 
 class DefaultIO {
     public:
-    std::string distance_metric = "null";
+    std::string distance_metric = "AUC";
     vector<data_struct> recived_learning;
     vector<data_struct> recived_testing;
-    int k = -1;
+    int k = 5;
     ofstream out;
     ifstream in;
     virtual string read() = 0;

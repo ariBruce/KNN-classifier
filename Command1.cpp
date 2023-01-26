@@ -70,6 +70,7 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
 };
 
 void Command1::execute(){
+  std::cout << "8";
   this->dio->write("Please upload your local train CSV file.");
   this->dio->recived_learning = transfer_data(this->dio->read(), "train");
   this->dio->write("Upload complete.");
