@@ -51,7 +51,6 @@ void Client::run() {
     std::cout << this->sodio->read();
     //send option
     std::string option = this->stadio->read();
-    std::cout << option;
     this->sodio->write(option);
     //The options:
     if(option == "1") {

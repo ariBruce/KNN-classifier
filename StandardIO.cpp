@@ -23,19 +23,12 @@ StandardIO::~StandardIO(){
 
 string StandardIO::read() {
     string str;
-    in >> str;
+    getline(cin, str);
     return str;
 }
 
-void StandardIO::read(float *f) {
-    in >> *f;
-}
-
 void StandardIO::write(string text) {
-    out << text;
+    std::cout << text;
 }
 
-void StandardIO::write(float f) {
-    out << f;
-}
 

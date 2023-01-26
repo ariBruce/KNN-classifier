@@ -19,7 +19,6 @@ class SocketIO : public DefaultIO {
     ~SocketIO();
     std::string read();
     void write(std::string text);
-    void write(float f);
 
 };
 

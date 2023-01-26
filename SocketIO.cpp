@@ -25,30 +25,21 @@ string SocketIO::read() {
         if (n < 0) {
             std::cerr << "ERROR reading from socket" << std::endl;
             exit(1);
+        } else if (n == 0){
+            std::cerr << "Connection closed by the client" << std::endl;
+            exit(1);
         } else {
             temp_data += buffer;
         }
     }
-    buffer = 0;
-    return temp_data;
+    //return everything but the $
+    return temp_data.substr(0,temp_data.length()-1);
 }
 
 void SocketIO::write(string text) {
 //send data to client
     text += "$";
-    if ( text != "$") {
-        int n = send(userID, text.c_str(), text.size() + 1, 0);
-            if (n < 0) {
-                std::cerr << "ERROR: writing to socket" << std::endl;
-                exit(1);
-            }
-        text.clear();
-    }
-}
-
-void SocketIO::write(float f) {
-    //send data to client
-    int n = send(userID, to_string(f).c_str(), to_string(f).size() + 1, 0);
+    int n = send(userID, text.c_str(), text.size() + 1, 0);
     if (n < 0) {
         std::cerr << "ERROR: writing to socket" << std::endl;
         exit(1);

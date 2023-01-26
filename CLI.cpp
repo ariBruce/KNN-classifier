@@ -22,11 +22,8 @@ void CLI::start() {
         print_menu();
         try {
         std::string input_choice = dio->read();
-        std::cout << input_choice;
-        int choice = stoi(input_choice);
-        std::cout << choice;
+        choice = stoi(input_choice);
         } catch(...){
-            std::cout << "choice\n";
             this->dio->write("invalid input");
         }
         if (choice < 1 || choice > 5) {
@@ -40,8 +37,9 @@ void CLI::start() {
 void CLI::print_menu() {
     std::string menu = "Welcome to the KNN Classifier Server. Please choose an option:\n";
     for (int i = 0; i < allCommands.size(); ++i) {
-        menu = menu + (to_string(i+1) + ". " + allCommands[i]->getDescription() + "\n");
+        menu += (to_string(i+1) + ". " + allCommands[i]->getDescription() + "\n");
     }
+    menu += "8. exit\n";
     this->dio->write(menu);
 }
 

@@ -24,8 +24,6 @@ class DefaultIO {
 
     virtual void write(string text) = 0;
 
-    virtual void write(float f) = 0;
-
     virtual ~DefaultIO() {};
 
 };
