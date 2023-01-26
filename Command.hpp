@@ -10,7 +10,6 @@
 #include "Knn.hpp"
 
 class Command {
-
   public:
     std::string Description = "empty";  //description of the command in the menu.
     std::string down = "\n";

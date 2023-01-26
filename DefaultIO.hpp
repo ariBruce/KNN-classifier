@@ -1,3 +1,6 @@
+#ifndef DefaultIO_H_
+#define DefaultIO_H_
+
 #include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -10,20 +13,21 @@
 using namespace std;
 
 class DefaultIO {
-public:
+    public:
     std::string distance_metric = "null";
     vector<data_struct> recived_learning;
     vector<data_struct> recived_testing;
     int k = -1;
     ofstream out;
     ifstream in;
-public:
     virtual string read() = 0;
 
     virtual void write(string text) = 0;
 
     virtual void write(float f) = 0;
 
-    virtual ~DefaultIO() {}
+    virtual ~DefaultIO() {};
 
 };
+
+#endif

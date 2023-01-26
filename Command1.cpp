@@ -1,15 +1,5 @@
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <regex>
-#include <string.h>
-#include <string>
-#include <vector>
-#include "DefaultIO.hpp"
-#include "Knn.hpp"
 #include "Command1.hpp"
-#include "Command.hpp"
 using namespace std;
 
 

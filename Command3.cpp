@@ -1,15 +1,5 @@
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <regex>
-#include <string.h>
-#include <string>
-#include <vector>
-#include "DefaultIO.hpp"
-#include "Knn.hpp"
 #include "Command3.hpp"
-#include "Command.hpp"
+
 using namespace std;
 
 
@@ -26,7 +16,7 @@ Command3::~Command3()
 void Command3::execute(){
     if (this->dio->recived_testing.empty() || this->dio->recived_learning.empty() || this->dio->distance_metric == "null") {
         this->dio->write("please upload data");
-    }else if(this->dio->k == NULL){
+    }else if(this->dio->k == -1){
         this->dio->write("invalid value for K");
 
     } else {
@@ -37,4 +27,5 @@ void Command3::execute(){
             this->dio->recived_testing[i].label = Knn_calc.predict();
         }
     this->dio->write("classifying data complete");
+    }
 }

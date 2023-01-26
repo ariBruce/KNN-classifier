@@ -1,15 +1,6 @@
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <regex>
-#include <string.h>
-#include <string>
-#include <vector>
-#include "DefaultIO.hpp"
-#include "Knn.hpp"
 #include "Command2.hpp"
-#include "Command.hpp"
+
 using namespace std;
 
 
@@ -32,22 +23,22 @@ void Command2::Validate_algorithem_settings(std::string input) {
         if(input_members > 2) {
             this->dio->k = -1;
             this->dio->distance_metric = "null";
-            this->dio->write('invalid input');
+            this->dio->write("invalid input");
         }
         //check if we get K value
         if (this->is_int(word)) {
             if(stoi(word) > 0){
                 this->dio->k = stoi(word);
             }else {
-                this->dio->write('invalid value for K');
+                this->dio->write("invalid value for K");
             }
         //check the type of calculation
         } else if (word == "AUC" || word == "MAN" || word == "CHB" || word == "CAN" || word == "MIN") {
             this->dio->distance_metric = word;
         } else if (!this->is_int(word)){
-            this->dio->write('invalid value for K');
+            this->dio->write("invalid value for K");
         } else {
-            this->dio->write('invalid value for metric');
+            this->dio->write("invalid value for metric");
         }
     }
 }

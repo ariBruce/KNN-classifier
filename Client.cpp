@@ -59,13 +59,13 @@ void Client::run() {
             this->sodio->write(line);
         }
         file_train.close();
-        this->sodio->read(); //compleation message
-        this->sodio->read(); //request to upload test file path
+        this->sodio->read();//compleation message
+        this->sodio->read();//request to upload test file path
         std::string path_test = this->stadio->read();
         ifstream file_test(path_test);
-        std::string line;
-        while(file_train >> line) {
-            this->sodio->write(line);
+        std::string line2;
+        while(file_train >> line2) {
+            this->sodio->write(line2);
         }
         file_test.close();
         this->sodio->read(); //compleation message

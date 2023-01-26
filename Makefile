@@ -2,19 +2,25 @@
 CC = g++
 CFLAGS = -std=c++11
 
-both: client.out server.out 
+both: client.out server.out
 
-client.out: MainClient.o client.o SocketIO.o StandardIO.o
-	$(CC) $(CFLAGS) MainClient.o client.o  SocketIO.o StandardIO.o -o client.out
+client.out: MainClient.o Client.o SocketIO.o StandardIO.o
+	$(CC) $(LDFLAGS) MainClient.o Client.o SocketIO.o StandardIO.o -o client.out
 
 server.out: DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o 
 	$(CC) $(CFLAGS) DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o -o server.out
 
-MainServer.o: MainServer.cpp
-	$(CC) $(CFLAGS) MainServer.cpp -c
+Client.o: Client.cpp
+	$(CC) $(CFLAGS) -c Client.cpp -o Client.o
 
 MainClient.o: MainClient.cpp
 	$(CC) $(CFLAGS) MainClient.cpp -c
+
+MainServer.o: MainServer.cpp
+	$(CC) $(CFLAGS) MainServer.cpp -c
+
+DefaultIO.o: DefaultIO.hpp
+	$(CC) $(CFLAGS) DefaultIO.hpp -c
 
 DistancesCalculate.o: DistancesCalculate.cpp DistancesCalculate.hpp
 	$(CC) $(CFLAGS) DistancesCalculate.cpp -c
@@ -25,7 +31,7 @@ Knn.o: Knn.cpp Knn.hpp
 server.o: server.cpp server.hpp
 	$(CC) $(CFLAGS) server.cpp -c
 
-v: Command.cpp Command.hpp
+Command.o: Command.cpp Command.hpp
 	$(CC) $(CFLAGS) Command.cpp -c
 
 Command3.o: Command3.cpp Command3.hpp
@@ -43,8 +49,6 @@ Command4.o: Command4.cpp Command4.hpp
 CLI.o: CLI.cpp CLI.hpp
 	$(CC) $(CFLAGS) CLI.cpp -c
 
-DefaultIO.o: DefaultIO.hpp
-	$(CC) $(CFLAGS) DefaultIO.hpp -c
 
 StandardIO.o: StandardIO.cpp StandardIO.hpp
 	$(CC) $(CFLAGS) StandardIO.cpp -c

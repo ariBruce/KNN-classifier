@@ -19,10 +19,10 @@ class CLI {
     vector<data_struct> recived_learning;
     vector<data_struct> recived_testing;
     vector<Command*> allCommands;
-    Command1 Com1;
+    /*Command1 Com1;
     Command2 Com2;
     Command3 Com3;
-    Command4 Com4;
+    Command4 Com4;*/
 
     // you can add data members
     public:
