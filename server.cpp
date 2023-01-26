@@ -49,7 +49,7 @@
         }
 
         //create a new thread for the client
-        std::thread t(&ClientHandler::handle, ch, (void*)&client_fd);
+        std::thread threadObj(handle, client_fd);
         //add the thread to the list of client threads
         this->thread_vector.push_back(t);
         if (this->thread_vector.empty()) {
@@ -81,9 +81,7 @@ bool Server::is_int(const std::string& s)
   return true;
 };
 
-void Server::handle(void *arg){
-        int* p = (int*)arg;
-        int clientID = *p;
+void Server::handle(int clientID){
         SocketIO sio(clientID);
         CLI cli(&sio);
         cli.start();

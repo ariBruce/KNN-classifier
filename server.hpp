@@ -31,7 +31,7 @@ public:
 
     ~Server();
 
-    void Start(ClientHandler ch);
+    void Start();
 
     void Stop();
 
