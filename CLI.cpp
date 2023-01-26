@@ -18,10 +18,12 @@ CLI::CLI(DefaultIO* dio)
 
 void CLI::start() {
     int choice = 0;
+    std::cout << "we are sending a menu\n";
     while (choice != 8) {
         this->dio->write("Welcome to the KNN Classifier Server. Please choose an option:\n");
         for (int i = 0; i < allCommands.size(); ++i) {
-            dio->write(to_string(i) + ". " + allCommands[i]->getDescription());
+            std::cout << "in the loop\n";
+            this->dio->write(to_string(i+1) + ". " + allCommands[i]->getDescription() + "\n");
         }
         choice = atoi(dio->read().c_str());
         if (choice < 1 || choice > 5) {

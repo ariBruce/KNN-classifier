@@ -46,7 +46,7 @@ void Client::run() {
     this->sodio = new SocketIO(sock);
     this->stadio = new StandardIO();
 
-    this->sodio->read();
+    std::cout << this->sodio->read();
     std::string option = this->stadio->read();
     this->sodio->write(option);
     //The options:

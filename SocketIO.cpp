@@ -29,6 +29,8 @@ string SocketIO::read() {
         } else if (n == 0) {
             break;
         } else {
+            std::cout << buffer;
+            bzero(buffer, 4096);
             temp_data.append(buffer, sizeof(buffer));
         }
     }
