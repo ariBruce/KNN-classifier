@@ -7,8 +7,8 @@ both: client.out server.out
 client.out: MainClient.o Client.o SocketIO.o StandardIO.o
 	$(CC) $(LDFLAGS) MainClient.o Client.o SocketIO.o StandardIO.o -o client.out
 
-server.out: DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o 
-	$(CC) $(CFLAGS) DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o -o server.out
+server.out: DistancesCalculate.o Knn.o SocketIO.o StandardIO.o ClientHandler.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o 
+	$(CC) $(CFLAGS) DistancesCalculate.o Knn.o SocketIO.o StandardIO.o ClientHandler.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o -o server.out
 
 Client.o: Client.cpp
 	$(CC) $(CFLAGS) -c Client.cpp -o Client.o
@@ -55,6 +55,9 @@ StandardIO.o: StandardIO.cpp StandardIO.hpp
 
 SocketIO.o: SocketIO.cpp SocketIO.hpp
 	$(CC) $(CFLAGS) SocketIO.cpp -c
+
+ClientHandler.o: ClientHandler.cpp ClientHandler.hpp
+	$(CC) $(CFLAGS) ClientHandler.cpp -c
 
 clean:
 	rm *.o server.out

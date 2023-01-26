@@ -1,13 +1,6 @@
-#include <iostream>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <fstream>
-#include <sstream>
-#include <regex>
+
+
 #include "server.hpp"
-#include "Knn.hpp"
 
   Server::Server(std::string port) {
     if (!is_int(port)) {
@@ -63,27 +56,27 @@
           break;
         }
     }
-}
+};
 
 void Server::Stop() {
     stopRun = true;
     t->join(); // do not delete this!
-}
+};
 
 Server::~Server() {
     delete this->t;
-}
+};
 
-  //check if the string can be int
-  bool Server::is_int(const std::string& s)
-    {
-    try
-    {
-        std::stoi(s);
-    }
-    catch(...)
-    {
-        return false;
-    }
-    return true;
-  };
+//check if the string can be int
+bool Server::is_int(const std::string& s)
+  {
+  try
+  {
+      std::stoi(s);
+  }
+  catch(...)
+  {
+      return false;
+  }
+  return true;
+};

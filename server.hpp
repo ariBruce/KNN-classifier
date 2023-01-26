@@ -3,21 +3,22 @@
 
 #include <pthread.h>
 #include <thread>
+#include <iostream>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <fstream>
+#include <sstream>
+#include <regex>
+#include "Knn.hpp"
 #include "CLI.hpp"
 #include "DefaultIO.hpp"
 #include "SocketIO.hpp"
+#include "ClientHandler.hpp"
 
 
-class ClientHandler {
-  public:
-    void *handle(void *arg) {
-        int* p = (int*)arg;
-        int clientID = *p;
-        SocketIO sio(clientID);
-        CLI cli(&sio);
-        cli.start();
-    }
-};
+
 
 class Server {
     thread *t; // the thread to run the start() method in
