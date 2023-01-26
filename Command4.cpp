@@ -5,7 +5,7 @@ using namespace std;
 
   Command4::Command4(DefaultIO* dio) : Command(dio){
       this ->dio = dio;
-      this->Description = "classify data";
+      this->Description = "display resualts";
   }
 
   Command4::~Command4()
