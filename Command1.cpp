@@ -38,25 +38,16 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
       {
           tmp.push_back(stod(word));
           vector_size++;
-          //אני חושבת שהאלס הזה צריך לבוא אחרי האיף של הליבלס ולא אחרי האיף של איז דאבל
-      } else { //will only occur for the training and not the testing file
-          //או שזה בעצם לא צריך להיות בפנים של האיף אלא של האלס
-          //if there is no classify
-          if (this->vector_size_total != 0 && vector_size == this->vector_size_total && file_type == "test")
-          {
-              labels = "Needs testing";
-          } else if(file_type == "train"){
+      } else if(!(this->is_double(word)) && file_type == "train"){ //will only occur for the training and not the testing file
             labels = word;
             if (this->vector_size_total == 0)
             {
                 this->vector_size_total = vector_size;
             }
-          }
-          //put the label and the pasrameters in the vector
-          if ((labels == "") || (vector_size != this->vector_size_total))
-          {
-              throw invalid_argument( "Invalid CSV data!" );
-          }
+      } else if(this->vector_size_total == vector_size && file_type == "test") {
+          labels = "Needs testing";
+      } else if(this->vector_size_total == vector_size && file_type == "test") {
+          throw invalid_argument( "Invalid CSV data!" );
       }
       data_struct temp_struct;
       temp_struct.label = labels;
@@ -71,10 +62,10 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
 
 void Command1::execute(){
   std::cout << "8";
-  this->dio->write("Please upload your local train CSV file.");
+  this->dio->write("Please upload your local train CSV file.\n");
   this->dio->recived_learning = transfer_data(this->dio->read(), "train");
-  this->dio->write("Upload complete.");
-  this->dio->write("Please upload your local test CSV file.");
+  this->dio->write("Upload complete.\n");
+  this->dio->write("Please upload your local test CSV file.\n");
   this->dio->recived_testing = transfer_data(this->dio->read(), "test");
-  this->dio->write("Upload complete.");
+  this->dio->write("Upload complete.\n");
 };

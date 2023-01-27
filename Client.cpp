@@ -47,44 +47,56 @@ void Client::run() {
     }
     this->sodio = new SocketIO(sock);
     this->stadio = new StandardIO();
-    //recive menu
-    std::cout << this->sodio->read();
-    //send option
-    std::string option = this->stadio->read();
-    this->sodio->write(option);
-    //The options:
-    if(option == "1") {
-        this->sodio->read(); //request to upload train file path
-        std::string path_train = this->stadio->read();
-        ifstream file_train(path_train);
-        std::string line;
-        while(file_train >> line) {
-            this->sodio->write(line);
+    while (true)
+    {
+        //recive menu
+        std::cout << this->sodio->read();
+        //send option
+        std::string option = this->stadio->read();
+        this->sodio->write(option);
+        //The options:
+        if(option == "1") {
+            std::string output_1 = this->sodio->read();
+            this->stadio->write(output_1);
+            //this->sodio->read(); //request to upload train file path
+            std::string path_train = this->stadio->read();
+            this->sodio->write("\n"); //send the path
+            ifstream file_train(path_train);
+            std::string line;
+            while(file_train >> line) {
+                this->sodio->write(line);
+            }
+            file_train.close();
+            std::string message = this->sodio->read();//compleation message
+            this->stadio->write(message);
+            //this->sodio->read();//request to upload test file path
+            output_1 = this->sodio->read();
+            this->stadio->write(output_1);
+            std::string path_test = this->stadio->read();
+            this->sodio->write("\n"); //send the path
+            ifstream file_test(path_test);
+            std::string line2;
+            while(file_train >> line2) {
+                this->sodio->write(line2);
+            }
+            file_test.close();
+            message = this->sodio->read();//compleation message
+            this->stadio->write(message);
+        } else if(option == "2") {
+            std::string output_2 = this->sodio->read(); //print the params values of K and calculate type
+            this->stadio->write(output_2); //write the output
+            std::string new_params = this->stadio->read();//takes new params values of K and calculate type
+            this->sodio->write(new_params); //send paramaters
+            this->sodio->read(); //recive the new params values of K and calculate type
+        } else if(option == "3") {
+            std::string output_3_upload = this->sodio->read(); //read that the files were classificate or a problen messeage
+            this->stadio->write(output_3_upload); //write the output
+        }else if(option == "4") {
+            this->sodio->read(); //print the classification
+        } else{
+            throw invalid_argument("invalid argument");
         }
-        file_train.close();
-        this->sodio->read();//compleation message
-        this->sodio->read();//request to upload test file path
-        std::string path_test = this->stadio->read();
-        ifstream file_test(path_test);
-        std::string line2;
-        while(file_train >> line2) {
-            this->sodio->write(line2);
-        }
-        file_test.close();
-        this->sodio->read(); //compleation message
     }
-    if(option == "2") {
-        std::string output_2 = this->sodio->read(); //print the params values of K and calculate type
-        this->stadio->write(output_2); //write the output
-        std::string new_params = this->stadio->read();//takes new params values of K and calculate type
-        this->sodio->write(new_params); //send paramaters
-        this->sodio->read(); //recive the new params values of K and calculate type
-    }
-    if(option == "3") {
-        std::string output_3 = this->sodio->read(); //read that the files were classificate or a problen messeage
-        this->stadio->write(output_3); //write the output
-    }
-    if(option == "4") {
-        this->sodio->read(); //print the classification
-    }      
+    
+   
 }

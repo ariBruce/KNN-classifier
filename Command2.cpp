@@ -28,10 +28,14 @@ void Command2::Validate_algorithem_settings(std::string input) {
         }
         //check if we get K value
         if (std::regex_match(word, int_regex)) {
-            int new_k = stoi(word);
-            std::cout << new_k;
+            int new_k;
+            if(this->is_int(word)){
+                new_k = stoi(word);
+                std::cout <<"this is the new k: " <<new_k;
+            }
             if(new_k > 0) {
                 this->dio->k = new_k;
+                std::cout << "is_int good\n";
             } else {
                 std::cout << "is_int problem\n";
                 this->dio->write("invalid value for K");

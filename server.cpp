@@ -1,5 +1,3 @@
-
-
 #include "server.hpp"
 
 Server::Server(std::string port) {

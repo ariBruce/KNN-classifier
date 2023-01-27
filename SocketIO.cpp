@@ -23,6 +23,7 @@ string SocketIO::read() {
     while (buffer != '$') {
         int n = recv(userID, &buffer, sizeof(char), 0);
         if (n < 0) {
+            std::cout<<"we are n<0 in socketIO";
             std::cerr << "ERROR reading from socket" << std::endl;
             exit(1);
         } else if (n == 0){
