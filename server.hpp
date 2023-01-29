@@ -1,46 +1,51 @@
-#ifndef Server_H_
-#define Server_H_
+#ifndef SERVER_H_
+#define SERVER_H_
 
+#include <pthread.h>
+#include <thread>
 #include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
 #include <arpa/inet.h>
-#include <vector>
+#include <fstream>
+#include <sstream>
+#include <regex>
+#include <functional>
+
+
 #include "Knn.hpp"
+#include "CLI.hpp"
+#include "DefaultIO.hpp"
+#include "SocketIO.hpp"
 
 
 class Server {
- private:
-  vector<double> doubleValues;
-  std::string csv_recived_learning;
-  std::string csv_recived_testing;
-  std::string csv_recived_temp;
-  vector<data_struct> recived_learning;
-  vector<data_struct> recived_testing;
-  int k = 5;
-  std::string calculation_method = "AUC";
-  int vector_size_total = 0;
-  int sockfd;
-  int port;
-  struct sockaddr_in serv_addr;
-  struct sockaddr_in cli_addr;
- public:
-  bool disconnect = false;
-  Server(std::string port, std::string csv_location);
-  void Bind();
-  void Listen();
-  int Accept();
-  void Read_csv_recived(int client_sockfd);
-  void Read_and_validate_input(int sockfd);
-  void Predict_Knn_result(int sockfd);
-  void Return_prediction(int client_sockfd);
-  //take the data from the excel and put it into structs into a vector    
-  vector<data_struct> read_data(std::string csv_sent);
-  //check if the argument is double
-  bool is_double(const std::string& s);
-  //check if the argument is int
-  bool is_int(const std::string& s);
+    thread *t; // the thread to run the start() method in
+    bool stopRun;
+    int sockfd;
+    int port;
+    sockaddr_in serv_addr;
+    sockaddr_in client;
+    std::vector<std::thread> thread_vector;
+    //std::vector<std::unique_ptr<std::thread>> thread_vector;
+
+public:
+    Server(std::string port);
+
+    ~Server();
+
+    void Start();
+
+    void Stop();
+
+    bool is_int(const std::string& s);
+
+    void Bind();
+
+    void Listen();
+
+    void handle(int clientID);
 };
 
-#endif
+#endif /*SERVER_H_ */
