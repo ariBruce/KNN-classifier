@@ -5,7 +5,7 @@
 int main(int argc, char* argv[]){
     if (argc != 3)
     {
-        throw invalid_argument( "invalid input" );
+        throw invalid_argument( "invalid input in main client" );
     }
     
     std::string ip = argv[1];

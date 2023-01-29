@@ -1,10 +1,4 @@
 #include "CLI.hpp"
-/*#include "Command.hpp"
-#include "DefaultIO.hpp"
-#include "Command1.hpp"
-#include "Command2.hpp"
-#include "Command3.hpp"
-#include "Command4.hpp"*/
 using namespace std;
 
 CLI::CLI(DefaultIO* dio)
@@ -24,7 +18,7 @@ void CLI::start() {
         try {
             choice = stoi(input_choice);
         } catch(...){
-            this->dio->write("invalid input");
+            this->dio->write("invalid input CLI");
         }
         if (choice < 1 || choice > 5) {
             continue;

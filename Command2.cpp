@@ -23,7 +23,7 @@ void Command2::Validate_algorithem_settings(std::string input) {
         std::cout << word + "\n";
         input_members += 1;
         if(input_members > 2) {
-            this->dio->write("invalid input");
+            this->dio->write("invalid input in command2");
             return;
         }
         //check if we get K value

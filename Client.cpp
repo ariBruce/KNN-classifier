@@ -47,12 +47,13 @@ void Client::run() {
     }
     this->sodio = new SocketIO(sock);
     this->stadio = new StandardIO();
+    std::string option;
     while (true)
     {
         //recive menu
         std::cout << this->sodio->read();
         //send option
-        std::string option = this->stadio->read();
+        option = this->stadio->read();
         this->sodio->write(option);
         //The options:
         if(option == "1") {
@@ -63,28 +64,48 @@ void Client::run() {
             this->sodio->write("\n"); //send the path
             ifstream file_train(path_train);
             std::string line;
-            while(file_train >> line) {
-                this->sodio->write(line);
+            std::cout<< "check good: " <<file_train.good()<<"\n";
+            if (file_train.is_open())
+            {
+                std::string fileContent((std::istreambuf_iterator<char>(file_train)),
+                            std::istreambuf_iterator<char>());
+                this->stadio->write(fileContent);
+                                /*while(file_train >> line) {
+                    std::cout<<"\nline: "<<line;
+                    this->stadio->write(line);
+                }*/
+                file_train.close();
+                std::string message = this->sodio->read();//compleation message
+                this->stadio->write(message);
+                //this->sodio->read();//request to upload test file path
+                output_1 = this->sodio->read();
+                this->stadio->write(output_1);
+                std::string path_test = this->stadio->read();
+                this->sodio->write("\n"); //send the path
+                ifstream file_test(path_test);
+                std::string line2;
+                if (file_test.is_open())
+                {
+                    std::string fileContent((std::istreambuf_iterator<char>(file_train)),
+                            std::istreambuf_iterator<char>());
+                    this->stadio->write(fileContent);
+                } else {
+                    std::cout<<"\nfile test didn't open";
+                }
+                
+                /*while(file_train >> line2) {
+                    this->sodio->write(line2);
+                }*/
+                file_test.close();
+                message = this->sodio->read();//compleation message
+                this->stadio->write(message);
+            } else {
+                std::cout<<"\nfile train didn't open";
             }
-            file_train.close();
-            std::string message = this->sodio->read();//compleation message
-            this->stadio->write(message);
-            //this->sodio->read();//request to upload test file path
-            output_1 = this->sodio->read();
-            this->stadio->write(output_1);
-            std::string path_test = this->stadio->read();
-            this->sodio->write("\n"); //send the path
-            ifstream file_test(path_test);
-            std::string line2;
-            while(file_train >> line2) {
-                this->sodio->write(line2);
-            }
-            file_test.close();
-            message = this->sodio->read();//compleation message
-            this->stadio->write(message);
+
         } else if(option == "2") {
             std::string output_2 = this->sodio->read(); //print the params values of K and calculate type
-            this->stadio->write(output_2); //write the output
+            this->stadio ->write(output_2); //write the output
             std::string new_params = this->stadio->read();//takes new params values of K and calculate type
             this->sodio->write(new_params); //send paramaters
             this->sodio->read(); //recive the new params values of K and calculate type
@@ -96,7 +117,5 @@ void Client::run() {
         } else{
             throw invalid_argument("invalid argument");
         }
-    }
-    
-   
+    }  
 }
