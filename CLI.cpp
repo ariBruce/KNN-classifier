@@ -16,15 +16,18 @@ void CLI::start() {
         print_menu();
         std::string input_choice = dio->read();
         try {
+            if(input_choice.length() != 1){
+                input_choice = input_choice.substr(1);
+            }
             choice = stoi(input_choice);
+            if (choice < 1 || choice > 5) {
+            continue;
+            }
+            allCommands.at(choice - 1)->execute();
         } catch(...){
-            std::cout<<"\nstoi(input_choice): " << input_choice;
+            std::cout<<"stoi(input_choice): " << input_choice;
             this->dio->write("invalid input CLI");
         }
-        if (choice < 1 || choice > 5) {
-            continue;
-        }
-        allCommands.at(choice - 1)->execute();
     }
 }
 

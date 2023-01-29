@@ -16,10 +16,8 @@ class Command2 : public Command {
     public:
         Command2(DefaultIO*);
         ~Command2();
-        void Validate_algorithem_settings(std::string input);
+        std::string Validate_algorithem_settings(std::string input);
         void execute();
-
-
 
 };
 
