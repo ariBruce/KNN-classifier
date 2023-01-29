@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <thread>
 #include "CLI.hpp"
 #include "SocketIO.hpp"
 #include "StandardIO.hpp"

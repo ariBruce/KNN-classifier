@@ -7,6 +7,7 @@
 #include <string.h>
 #include <string>
 #include <vector>
+#include <thread>
 #include "DefaultIO.hpp"
 #include "Knn.hpp"
 #include "Command.hpp"
