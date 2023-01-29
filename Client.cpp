@@ -84,13 +84,13 @@ void Client::run() {
             ifstream file_test(path_test);
             if (file_test.is_open())
             {
-                std::string fileContent((std::istreambuf_iterator<char>(file_test)),
+                std::string fileContent2((std::istreambuf_iterator<char>(file_test)),
                         std::istreambuf_iterator<char>());
-                fileContent.erase(std::remove(fileContent.begin(), fileContent.end(), ' '), fileContent.end());
-                replace(fileContent.begin(), fileContent.end(), '\n', ',');
-                fileContent.insert(0, ",");
-                this->stadio->write(fileContent);
-                this->sodio->write(fileContent);
+                replace(fileContent2.begin(), fileContent2.end(), '\r', ',');
+                fileContent2.erase(std::remove(fileContent2.begin(), fileContent2.end(), '\n'), fileContent2.end());
+                fileContent2.insert(0, ",");
+                this->stadio->write(fileContent2);
+                this->sodio->write(fileContent2);
             } else {
                 std::cout<<"\nfile test didn't open";
                 continue;
@@ -114,3 +114,4 @@ void Client::run() {
         }
     }  
 }
+

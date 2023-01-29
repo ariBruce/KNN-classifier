@@ -39,18 +39,17 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
       flag = 1;
       continue;
     }
-    if(file_type != "train") { //checking
-      //std::cout << word; 
-      //std::cout << " !" << word[word.length()-1] << "!\n";
-    }
+
     if (this->is_double(word) && file_type == "train") {
       tmp.push_back(stod(word));
       vector_size++;
     } else if(this->is_double(word) && file_type == "test" && vector_size < this->vector_size_total){
         tmp.push_back(stod(word));
         vector_size++;
-        if (vector_size == this->vector_size_total) {
-          std::cout << "got here " << word << "\n";
+    }else if (this->is_double(word) && file_type == "test" && vector_size == this->vector_size_total) {
+      for(int i = 0; i < tmp.size(); i++) {
+        std::cout<<tmp[i] <<" ";
+      }
           data_struct temp_struct;
           temp_struct.label = "Needs testing";
           temp_struct.points = tmp;
@@ -58,9 +57,12 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
           tmp.clear();
           labels = "";
           vector_size = 0;
+          if (this->is_double(word)){
+            tmp.push_back(stod(word));
+            vector_size++;
+          }
           continue;
-        }
-    } else if(!(this->is_double(word)) && file_type == "train"){ //will only occur for the training and not the testing file
+        } else if(!(this->is_double(word)) && file_type == "train"){ //will only occur for the training and not the testing file
       labels = word;
     } else {
       std::cout << "right befor we crash " << is_double(word) << " " << word + "\n"; 
@@ -78,7 +80,7 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
   } 
   if(data[0].points.size() > 0){
     this->vector_size_total = data[0].points.size();
-    std::cout << "vector size " <<vector_size_total << "\n";
+    std::cout << "vector size " <<this->vector_size_total << "\n";
     this->dio->write("Upload complete.\n");
     return data;
   }
