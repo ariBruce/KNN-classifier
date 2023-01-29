@@ -63,7 +63,7 @@ void Client::run() {
             std::string path_train = this->stadio->read();
             this->sodio->write("\n"); //send the path
             ifstream file_train(path_train);
-            std::string line;
+            //std::string line;
             std::cout<< "check good: " <<file_train.good()<<"\n";
             if (file_train.is_open())
             {
@@ -83,7 +83,7 @@ void Client::run() {
                 std::string path_test = this->stadio->read();
                 this->sodio->write("\n"); //send the path
                 ifstream file_test(path_test);
-                std::string line2;
+                //std::string line2;
                 if (file_test.is_open())
                 {
                     std::string fileContent((std::istreambuf_iterator<char>(file_train)),

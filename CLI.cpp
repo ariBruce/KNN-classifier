@@ -18,6 +18,7 @@ void CLI::start() {
         try {
             choice = stoi(input_choice);
         } catch(...){
+            std::cout<<"\nstoi(input_choice): " <<input_choice;
             this->dio->write("invalid input CLI");
         }
         if (choice < 1 || choice > 5) {

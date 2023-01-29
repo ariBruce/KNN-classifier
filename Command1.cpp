@@ -37,8 +37,11 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
   {
     data_size = sizeof(ss);
     std::cout<<"\nword: "<<word <<"size: ", data_size;
-      if (this->is_double(word))
+      if (this->is_double(word) && file_type == "train")
       {
+          tmp.push_back(stod(word));
+          vector_size++;
+      } else if(this->is_double(word) && file_type == "test" && vector_size < this->vector_size_total){
           tmp.push_back(stod(word));
           vector_size++;
       } else if(!(this->is_double(word)) && file_type == "train"){ //will only occur for the training and not the testing file
@@ -49,34 +52,32 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
             }
       } else if(this->vector_size_total == vector_size && file_type == "test") {
           labels = "Needs testing";
-      } else if(this->vector_size_total == vector_size && file_type == "test") {
-          throw invalid_argument( "Invalid CSV data!" );
+      } else{
+          throw invalid_argument( "Invalid CSV data!1" );
       }
-      data_struct temp_struct;
-      temp_struct.label = labels;
-      temp_struct.points = tmp;
-      data.push_back(temp_struct);
-      tmp.clear();
-      labels = "";
-      vector_size = 0;
+      if(!(labels== "" || tmp.empty())){
+        data_struct temp_struct;
+        temp_struct.label = labels;
+        temp_struct.points = tmp;
+        data.push_back(temp_struct);
+        tmp.clear();
+        labels = "";
+        vector_size = 0;
+      }
   }
-  if (!data.empty())
-  {
+  if(!data.empty()){
     this->dio->write("Upload complete.\n");
     return data;
-  } else {
-    throw invalid_argument( "Invalid CSV data!" );
   }
-  
+  return data;
   //std::cout<<"\nsize data: " << data_size << " word: "<<word;
   //return data;
 };
 
 void Command1::execute(){
-  std::cout << "8";
   this->dio->write("Please upload your local train CSV file.\n");
-    std::string the_content = this->dio->read();
-    std::cout<< "\npath train: " << the_content;
+  std::string the_content = this->dio->read();
+  std::cout<< "\npath train: " << the_content;
   this->dio->recived_learning = transfer_data(the_content, "train");
   //this->dio->write("Upload complete.\n");
   if(!(this->dio->recived_learning.empty())) {
