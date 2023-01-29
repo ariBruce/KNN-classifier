@@ -21,7 +21,7 @@ void CLI::start() {
             }
             choice = stoi(input_choice);
             if (choice < 1 || choice > 5) {
-            continue;
+                continue;
             }
             allCommands.at(choice - 1)->execute();
         } catch(...){

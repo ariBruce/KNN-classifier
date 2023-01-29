@@ -21,13 +21,25 @@ void Command3::execute(){
         this->dio->write("invalid value for K\n");
 
     } else {
-        std::cout<<"the k is fine";
-        for (int i = 0; i < this -> dio->recived_testing.size(); i++) {
+        auto it = this->dio->recived_testing.end();
+        std::cout<<"\nthe k is fine ";
+
+        for (int i = 0; i < this->dio->recived_testing.size(); i++) {
             Knn Knn_calc = Knn(this->dio->k, this->dio->recived_testing[i].points , this->dio->distance_metric);
             //run the algorithm
             Knn_calc.findKnearest(&this->dio->recived_learning);
             this->dio->recived_testing[i].label = Knn_calc.predict();
+            data_struct temp_struct;
+            auto it = std::find_if(this->dio->recived_testing.begin(), this->dio->recived_testing.end(),
+                [](const data_struct& ds) { return ds.label == "Needs testing"; });            
         }
-    this->dio->write("classifying data complete\n");
+        if (it == this->dio->recived_testing.end())
+        {
+            this->dio->write("classifying data complete\n");
+        } else {
+            this->dio->write("classifying data failed\n");
+
+        }
+
     }
 }

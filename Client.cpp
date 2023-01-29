@@ -63,7 +63,6 @@ void Client::run() {
             std::string path_train = this->stadio->read();
             ifstream file_train(path_train);
             //std::string line;
-            std::cout<< "check good: " <<file_train.good()<<"\n";
             if (file_train.is_open())
             {
                 std::string fileContent((std::istreambuf_iterator<char>(file_train)),
@@ -89,7 +88,6 @@ void Client::run() {
                 replace(fileContent2.begin(), fileContent2.end(), '\r', ',');
                 fileContent2.erase(std::remove(fileContent2.begin(), fileContent2.end(), '\n'), fileContent2.end());
                 fileContent2.insert(0, ",");
-                this->stadio->write(fileContent2);
                 this->sodio->write(fileContent2);
             } else {
                 std::cout<<"\nfile test didn't open";
@@ -108,7 +106,8 @@ void Client::run() {
             std::string output_3_upload = this->sodio->read(); //read that the files were classificate or a problen messeage
             this->stadio->write(output_3_upload); //write the output
         }else if(option == "4") {
-            this->sodio->read(); //print the classification
+            std::string output_4 = this->sodio->read(); //print the classification
+            this->stadio->write(output_4);
         } else{
             throw invalid_argument("invalid argument");
         }
