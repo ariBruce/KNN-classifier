@@ -109,9 +109,37 @@ void Client::run() {
             this->stadio->write(output_3_upload); //write the output
         }else if(option == "4") {
             this->sodio->read(); //print the classification
-        } else{
+        } else if(option == "5"){
+            std::string classification = this->sodio->read(); //print the classification
+            if(classification == "please upload data" || classification == "please classify the data") {
+                this->stadio->write(classification);
+                continue;
+            }
+            std::string file_path = this->stadio->read();
+            std::ifstream file(file_path);
+            if(file.good()) {
+                std::thread downloadThread(Download, file_path, classification);
+            } else {
+                his->stadio->write("invalid input");
+            }
+        } else {
             throw invalid_argument("invalid argument");
         }
     }  
 }
 
+void Client::Download(std::string file_path, std::string classification) {
+    std::ofstream file(filepath);
+    if (!file.good()) {
+        std::cerr << "Error: Could not open file for writing at path " << filepath << std::endl;
+        return;
+    }
+    std::stringstream classification_stream(classification);
+    std::string cell;
+    int order_number = 1;
+    while (std::getline(classification_stream, cell, ',')) {
+       file << order_number << "," << cell << "\n";
+        order_number++;
+    }
+    file.close();
+}

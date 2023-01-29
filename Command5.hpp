@@ -1,5 +1,5 @@
-#ifndef Command4_H_
-#define Command4_H_
+#ifndef Command5_H_
+#define Command5_H_
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -13,8 +13,8 @@
 
 class Command5 : public Command {
     public: 
-    Command4(DefaultIO*);
-    ~Command4();
+    Command5(DefaultIO*);
+    ~Command5();
     void execute();
 
 

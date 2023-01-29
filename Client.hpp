@@ -16,5 +16,6 @@ class Client{
     Client(string ip, string port);
     ~Client();
     void run();
+    void Download(string file_path, string classification);
 
 };

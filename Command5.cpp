@@ -19,10 +19,11 @@ using namespace std;
         this->dio->write("please classify the data");
         return;
     } else {
-        dio->write("Please enter file path");
-        if (dio->read() == "valid") {
-            //TODO: create thread to handle the download
-            send();
+        std::string classifications = "";
+        for (int i = 1; i <= this->dio->recived_testing.size(); i++) {
+            classifications.append(this->dio->recived_testing[i-1].label);
+            classifications.append(",");
         }
+            this->dio->write(classifications);
     }
-  }
+}

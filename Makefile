@@ -8,8 +8,8 @@ both: client.out server.out
 client.out: MainClient.o Client.o SocketIO.o StandardIO.o
 	$(CC) $(CFFLAGS) MainClient.o Client.o SocketIO.o StandardIO.o -o client.out
 
-server.out: DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o 
-	$(CC) $(CFLAGS) DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o CLI.o server.o MainServer.o -o server.out -pthread
+server.out: DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o Command5.o CLI.o server.o MainServer.o 
+	$(CC) $(CFLAGS) DistancesCalculate.o Knn.o SocketIO.o StandardIO.o Command.o Command1.o Command2.o Command3.o Command4.o Command5.o CLI.o server.o MainServer.o -o server.out -pthread
 
 Client.o: Client.cpp
 	$(CC) $(CFLAGS) -c Client.cpp -o Client.o
@@ -46,6 +46,9 @@ Command2.o: Command2.cpp Command2.hpp
 
 Command4.o: Command4.cpp Command4.hpp
 	$(CC) $(CFLAGS) Command4.cpp -c
+
+Command5.o: Command5.cpp Command5.hpp
+	$(CC) $(CFLAGS) Command5.cpp -c
 
 CLI.o: CLI.cpp CLI.hpp
 	$(CC) $(CFLAGS) CLI.cpp -c
