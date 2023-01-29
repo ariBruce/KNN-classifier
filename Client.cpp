@@ -102,6 +102,7 @@ void Client::run() {
             std::string new_params = this->stadio->read();//takes new params values of K and calculate type
             this->sodio->write(new_params); //send paramaters
             this->sodio->read(); //recive the new params values of K and calculate type
+            continue;
         } else if(option == "3") {
             std::string output_3_upload = this->sodio->read(); //read that the files were classificate or a problen messeage
             this->stadio->write(output_3_upload); //write the output

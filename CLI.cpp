@@ -25,8 +25,7 @@ void CLI::start() {
             }
             allCommands.at(choice - 1)->execute();
         } catch(...){
-            std::cout<<"stoi(input_choice): " << input_choice;
-            this->dio->write("invalid input CLI");
+            this->dio->write("invalid input");
         }
     }
 }

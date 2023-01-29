@@ -20,11 +20,10 @@ using namespace std;
       this->dio->write("please classify the data");
     } else {
       std::string classify_string = "";
-      for (int i = 0; i <= this -> dio->recived_testing.size(); i++) {
+      for (int i = 1; i <= this -> dio->recived_testing.size(); i++) {
         if (i == this-> dio->recived_testing.size()) {
-          std::cout<<"classsss";
+          classify_string  = classify_string + "\n" + "Done.";
           this->dio->write(classify_string);
-          this->dio->write("Done.");
         } else {
           std::string new_classify = to_string(i) + " " + this->dio->recived_testing[i].label;
           classify_string = classify_string + "\n" + new_classify;
@@ -32,4 +31,3 @@ using namespace std;
       }
     }
   }
-    

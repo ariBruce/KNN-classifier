@@ -76,20 +76,20 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
   } 
   if(data[0].points.size() > 0){
     this->vector_size_total = data[0].points.size();
-    this->dio->write("Upload complete.\n");
+    this->dio->write("Upload complete.");
     return data;
   }
-  this->dio->write("Upload not complete.\n");
+  this->dio->write("Upload not complete.");
   return data;
 };
 
 void Command1::execute(){
-  this->dio->write("Please upload your local train CSV file.\n");
+  this->dio->write("Please upload your local train CSV file.");
   std::string the_content = this->dio->read();
   this->dio->recived_learning = transfer_data(the_content, "train");
   //this->dio->write("Upload complete.\n");
   if(!(this->dio->recived_learning.empty())) {
-    this->dio->write("Please upload your local test CSV file.\n");
+    this->dio->write("Please upload your local test CSV file.");
     the_content = this->dio->read();
     this->dio->recived_testing = transfer_data(the_content, "test");
     //this->dio->write("Upload complete.\n");
