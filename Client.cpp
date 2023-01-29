@@ -61,7 +61,6 @@ void Client::run() {
             this->stadio->write(output_1);
             //this->sodio->read(); //request to upload train file path
             std::string path_train = this->stadio->read();
-            this->sodio->write("\n"); //send the path
             ifstream file_train(path_train);
             //std::string line;
             std::cout<< "check good: " <<file_train.good()<<"\n";
@@ -69,40 +68,36 @@ void Client::run() {
             {
                 std::string fileContent((std::istreambuf_iterator<char>(file_train)),
                             std::istreambuf_iterator<char>());
-                this->stadio->write(fileContent);
-                                /*while(file_train >> line) {
-                    std::cout<<"\nline: "<<line;
-                    this->stadio->write(line);
-                }*/
-                file_train.close();
-                std::string message = this->sodio->read();//compleation message
-                this->stadio->write(message);
-                //this->sodio->read();//request to upload test file path
-                output_1 = this->sodio->read();
-                this->stadio->write(output_1);
-                std::string path_test = this->stadio->read();
-                this->sodio->write("\n"); //send the path
-                ifstream file_test(path_test);
-                //std::string line2;
-                if (file_test.is_open())
-                {
-                    std::string fileContent((std::istreambuf_iterator<char>(file_train)),
-                            std::istreambuf_iterator<char>());
-                    this->stadio->write(fileContent);
-                } else {
-                    std::cout<<"\nfile test didn't open";
-                }
-                
-                /*while(file_train >> line2) {
-                    this->sodio->write(line2);
-                }*/
-                file_test.close();
-                message = this->sodio->read();//compleation message
-                this->stadio->write(message);
+                replace(fileContent.begin(), fileContent.end(), '\n', ',');
+                fileContent.insert(0, ",");
+                this->sodio->write(fileContent);
             } else {
                 std::cout<<"\nfile train didn't open";
+                continue;
             }
-
+            file_train.close();
+            std::string message = this->sodio->read();//compleation message
+            this->stadio->write(message);
+            output_1 = this->sodio->read(); //request to upload test file path
+            this->stadio->write(output_1);
+            std::string path_test = this->stadio->read();
+            ifstream file_test(path_test);
+            if (file_test.is_open())
+            {
+                std::string fileContent((std::istreambuf_iterator<char>(file_test)),
+                        std::istreambuf_iterator<char>());
+                fileContent.erase(std::remove(fileContent.begin(), fileContent.end(), ' '), fileContent.end());
+                replace(fileContent.begin(), fileContent.end(), '\n', ',');
+                fileContent.insert(0, ",");
+                this->stadio->write(fileContent);
+                this->sodio->write(fileContent);
+            } else {
+                std::cout<<"\nfile test didn't open";
+                continue;
+            }
+            file_test.close();
+            message = this->sodio->read();//compleation message
+            this->stadio->write(message);
         } else if(option == "2") {
             std::string output_2 = this->sodio->read(); //print the params values of K and calculate type
             this->stadio ->write(output_2); //write the output

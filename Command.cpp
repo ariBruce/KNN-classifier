@@ -20,8 +20,10 @@ string Command::getDescription() {
 
 //check if the string can be double
 bool Command::is_double(const std::string& s) {
+    std::string trimmed_string = s;
+    trimmed_string.erase(std::remove(trimmed_string.begin(), trimmed_string.end(), '\t'), trimmed_string.end());
     std::regex double_regex("^[-+]?(0|[1-9][0-9]*)(\\.[0-9]+)?$");
-    return std::regex_match(s, double_regex);
+    return std::regex_match(trimmed_string, double_regex);
 };
 
 //check if the string can be int

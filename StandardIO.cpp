@@ -13,12 +13,8 @@
 using namespace std;
 
 StandardIO::StandardIO() {
-    string inputFile, outputFile;
-    in.open(inputFile);
-    out.open(outputFile);
 }
 StandardIO::~StandardIO(){
-
 }
 
 string StandardIO::read() {
@@ -28,7 +24,7 @@ string StandardIO::read() {
 }
 
 void StandardIO::write(string text) {
-    std::cout << text;
+    std::cout << text + "\n";
 }
 
 

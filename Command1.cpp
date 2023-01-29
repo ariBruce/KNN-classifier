@@ -29,55 +29,66 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
   string line, word;
   vector<double> tmp;
   int vector_size = 0;
-  int data_size = 0;
+  int flag = 0;
   //put the data from the csv into vector
   stringstream ss(csv_sent);
   //when there are still data in the row
   while(getline(ss,word,','))
   {
-    data_size = sizeof(ss);
-    std::cout<<"\nword: "<<word <<"size: ", data_size;
-      if (this->is_double(word) && file_type == "train")
-      {
-          tmp.push_back(stod(word));
-          vector_size++;
-      } else if(this->is_double(word) && file_type == "test" && vector_size < this->vector_size_total){
-          tmp.push_back(stod(word));
-          vector_size++;
-      } else if(!(this->is_double(word)) && file_type == "train"){ //will only occur for the training and not the testing file
-            labels = word;
-            if (this->vector_size_total == 0)
-            {
-                this->vector_size_total = vector_size;
-            }
-      } else if(this->vector_size_total == vector_size && file_type == "test") {
-          labels = "Needs testing";
-      } else{
-          throw invalid_argument( "Invalid CSV data!1" );
-      }
-      if(!(labels== "" || tmp.empty())){
-        data_struct temp_struct;
-        temp_struct.label = labels;
-        temp_struct.points = tmp;
-        data.push_back(temp_struct);
-        tmp.clear();
-        labels = "";
-        vector_size = 0;
-      }
-  }
-  if(!data.empty()){
+    if(flag == 0) {
+      flag = 1;
+      continue;
+    }
+    if(file_type != "train") { //checking
+      //std::cout << word; 
+      //std::cout << " !" << word[word.length()-1] << "!\n";
+    }
+    if (this->is_double(word) && file_type == "train") {
+      tmp.push_back(stod(word));
+      vector_size++;
+    } else if(this->is_double(word) && file_type == "test" && vector_size < this->vector_size_total){
+        tmp.push_back(stod(word));
+        vector_size++;
+        if (vector_size == this->vector_size_total) {
+          std::cout << "got here " << word << "\n";
+          data_struct temp_struct;
+          temp_struct.label = "Needs testing";
+          temp_struct.points = tmp;
+          data.push_back(temp_struct);
+          tmp.clear();
+          labels = "";
+          vector_size = 0;
+          continue;
+        }
+    } else if(!(this->is_double(word)) && file_type == "train"){ //will only occur for the training and not the testing file
+      labels = word;
+    } else {
+      std::cout << "right befor we crash " << is_double(word) << " " << word + "\n"; 
+      throw invalid_argument( "Invalid CSV data!" );
+    } 
+    if(!(labels== "")){
+      data_struct temp_struct;
+      temp_struct.label = labels;
+      temp_struct.points = tmp;
+      data.push_back(temp_struct);
+      tmp.clear();
+      labels = "";
+      vector_size = 0;
+    }
+  } 
+  if(data[0].points.size() > 0){
+    this->vector_size_total = data[0].points.size();
+    std::cout << "vector size " <<vector_size_total << "\n";
     this->dio->write("Upload complete.\n");
     return data;
   }
+  this->dio->write("Upload not complete.\n");
   return data;
-  //std::cout<<"\nsize data: " << data_size << " word: "<<word;
-  //return data;
 };
 
 void Command1::execute(){
   this->dio->write("Please upload your local train CSV file.\n");
   std::string the_content = this->dio->read();
-  std::cout<< "\npath train: " << the_content;
   this->dio->recived_learning = transfer_data(the_content, "train");
   //this->dio->write("Upload complete.\n");
   if(!(this->dio->recived_learning.empty())) {
@@ -85,6 +96,8 @@ void Command1::execute(){
     the_content = this->dio->read();
     this->dio->recived_testing = transfer_data(the_content, "test");
     //this->dio->write("Upload complete.\n");
+  } else {
+    this->dio->write("invalid input test file\n");
   }
 
 };
