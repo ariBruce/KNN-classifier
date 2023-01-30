@@ -89,11 +89,15 @@ void Command1::execute(){
   std::cout<<"len: "<<the_content.size()<<": "<<the_content;
   if(the_content.size() > 3){
     this->dio->recived_learning = transfer_data(the_content, "train");
-    //this->dio->write("Upload complete.\n");
     if(!(this->dio->recived_learning.empty())) {
       this->dio->write("Please upload your local test CSV file.");
       the_content = this->dio->read();
-      this->dio->recived_testing = transfer_data(the_content, "test");
+      if(the_content.size() > 3){
+        this->dio->recived_testing = transfer_data(the_content, "test");
+      } else{
+        this->dio->write("invalid path");
+        return;
+      }
       //this->dio->write("Upload complete.\n");
     } else {
       this->dio->write("invalid input test file");

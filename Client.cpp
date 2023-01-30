@@ -77,7 +77,6 @@ void Client::run() {
                 this->stadio->write(output);
                 continue;
             }
-            std::cout<<"here";
             file_train.close();
             std::string message = this->sodio->read();//compleation message
             this->stadio->write(message);
