@@ -7,6 +7,7 @@
 #include <string.h>
 #include <string>
 #include <fstream>
+#include <thread>
 #include <sstream>
 #include "Client.hpp"
 #include "SocketIO.hpp"
@@ -110,36 +111,42 @@ void Client::run() {
         }else if(option == "4") {
             this->sodio->read(); //print the classification
         } else if(option == "5"){
-            std::string classification = this->sodio->read(); //print the classification
-            if(classification == "please upload data" || classification == "please classify the data") {
-                this->stadio->write(classification);
-                continue;
-            }
-            std::string file_path = this->stadio->read();
-            std::ifstream file(file_path);
-            if(file.good()) {
-                std::thread downloadThread(&Client::Download, this, file_path, classification);
-            } else {
-                this->stadio->write("invalid input");
-            }
+            Download();
         } else {
             throw invalid_argument("invalid argument");
         }
     }  
 }
 
-void Client::Download(std::string file_path, std::string classification) {
-    std::ofstream file(file_path);
-    if (!file.good()) {
-        std::cerr << "Error: Could not open file for writing at path " << file_path << std::endl;
+void Client::Download() {
+    std::string classification = this->sodio->read(); //print the classification
+    if(classification == "please upload data" || classification == "please classify the data") {
+        this->stadio->write(classification);
         return;
     }
-    std::stringstream classification_stream(classification);
-    std::string cell;
-    int order_number = 1;
-    while (std::getline(classification_stream, cell, ',')) {
-       file << order_number << "," << cell << "\n";
-        order_number++;
+    this->stadio->write("please upload a valid file path");
+    std::string file_path = this->stadio->read();
+    std::ifstream file(file_path);
+    if(file.good()) {
+        std::thread downloadThread([&] {
+            std::stringstream classification_stream(classification);
+            std::string cell;
+            int order_number = 1;
+
+            std::ofstream output_file(file_path, std::ios::out | std::ios::trunc);
+            if (!output_file.is_open()) {
+                this->stadio->write("Failed to open file for writing");
+                return;
+            }
+            
+            while (std::getline(classification_stream, cell, ',')) {
+                output_file << order_number << " " << cell << "\n";
+                order_number++;
+            }
+            output_file.close();
+        });
+        downloadThread.detach();
+    } else {
+        this->stadio->write("invalid input");
     }
-    file.close();
 }

@@ -8,6 +8,7 @@ CLI::CLI(DefaultIO* dio)
     this->allCommands.push_back(new Command2(dio));
     this->allCommands.push_back(new Command3(dio));
     this->allCommands.push_back(new Command4(dio));
+    this->allCommands.push_back(new Command5(dio));
 }
 
 void CLI::start() {

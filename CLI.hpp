@@ -11,6 +11,7 @@
 #include "Command2.hpp"
 #include "Command3.hpp"
 #include "Command4.hpp"
+#include "Command5.hpp"
 
 using namespace std;
 

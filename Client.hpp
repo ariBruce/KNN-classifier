@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string.h>
-#include <thread>
 #include "CLI.hpp"
 #include "SocketIO.hpp"
 #include "StandardIO.hpp"
@@ -17,6 +16,6 @@ class Client{
     Client(string ip, string port);
     ~Client();
     void run();
-    void Download(string file_path, string classification);
+    void Download();
 
 };
