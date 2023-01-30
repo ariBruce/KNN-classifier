@@ -94,16 +94,16 @@ void Command1::execute(){
       if(the_content.size() > 3){
         this->dio->recived_testing = transfer_data(the_content, "test");
       } else{
-        this->dio->write("invalid path");
+        this->dio->write("invalid input");
         return;
       }
       //this->dio->write("Upload complete.\n");
     } else {
-      this->dio->write("invalid input test file");
+      this->dio->write("invalid input");
     }
   } else{
     //std::cout<<"print";
-    this->dio->write("invalid path");
+    this->dio->write("invalid input");
     return;
   }
 

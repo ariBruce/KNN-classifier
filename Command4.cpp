@@ -26,7 +26,12 @@ using namespace std;
           this->dio->write(classify_string);
         } else {
           std::string new_classify = to_string(i) + " " + this->dio->recived_testing[i].label;
-          classify_string = classify_string + "\n" + new_classify;
+          if (classify_string == "")
+          {
+            classify_string = new_classify;
+          } else{
+            classify_string = classify_string + "\n" + new_classify;
+          }
         }
       }
     }

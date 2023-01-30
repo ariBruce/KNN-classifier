@@ -19,7 +19,7 @@ std::string Command2::Validate_algorithem_settings(std::string input) {
     while (getline(ss,word,' ')) {
         input_members += 1;
         if(input_members > 2) {
-            return("invalid input in command2");
+            return("invalid input");
         }
         //check if we get K value
         if (this->is_int(word)) {

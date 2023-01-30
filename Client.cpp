@@ -121,7 +121,7 @@ void Client::run() {
         } else if(option == "5"){
             Download();
         }else{
-            throw invalid_argument("invalid argument");
+            throw invalid_argument("invalid input");
         }
     }  
 }
@@ -135,7 +135,7 @@ void Client::Download() {
         return;
     }
     
-    this->stadio->write("Please upload a valid file path");
+    //this->stadio->write("Please upload a valid file path");
     std::string file_path = this->stadio->read();
     std::ofstream output_file(file_path, std::ios::trunc | std::ios::out);
     

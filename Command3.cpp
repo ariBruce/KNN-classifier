@@ -17,7 +17,7 @@ void Command3::execute(){
     if (this->dio->recived_testing.empty() || this->dio->recived_learning.empty() || this->dio->distance_metric == "null") {
         this->dio->write("please upload data");
     }else if(this->dio->k == -1){
-        this->dio->write("invalid value for K");
+        this->dio->write("invalid input");
 
     } else {
         for (int i = 0; i < this -> dio->recived_testing.size(); i++) {
