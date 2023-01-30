@@ -72,7 +72,9 @@ void Client::run() {
                 fileContent.insert(0, ",");
                 this->sodio->write(fileContent);
             } else {
-                std::cout<<"\nfile train didn't open";
+                this->sodio->write("1");
+                std::string output = this->stadio->read();
+                this->sodio->write(output);
                 continue;
             }
             file_train.close();
@@ -86,12 +88,14 @@ void Client::run() {
             {
                 std::string fileContent2((std::istreambuf_iterator<char>(file_test)),
                         std::istreambuf_iterator<char>());
-                replace(fileContent2.begin(), fileContent2.end(), '\r', ',');
-                fileContent2.erase(std::remove(fileContent2.begin(), fileContent2.end(), '\n'), fileContent2.end());
+                replace(fileContent2.begin(), fileContent2.end(), '\n', ',');
+                fileContent2.erase(std::remove(fileContent2.begin(), fileContent2.end(), '\r'), fileContent2.end());
                 fileContent2.insert(0, ",");
                 this->sodio->write(fileContent2);
             } else {
-                std::cout<<"\nfile test didn't open";
+                this->sodio->write("1");
+                std::string output = this->stadio->read();
+                this->sodio->write(output);
                 continue;
             }
             file_test.close();

@@ -47,9 +47,6 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
         tmp.push_back(stod(word));
         vector_size++;
     }else if (this->is_double(word) && file_type == "test" && vector_size == this->vector_size_total) {
-      for(int i = 0; i < tmp.size(); i++) {
-        std::cout<<tmp[i] <<" ";
-      }
           data_struct temp_struct;
           temp_struct.label = "Needs testing";
           temp_struct.points = tmp;
@@ -65,7 +62,6 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
         } else if(!(this->is_double(word)) && file_type == "train"){ //will only occur for the training and not the testing file
       labels = word;
     } else {
-      std::cout << "right befor we crash " << is_double(word) << " " << word + "\n"; 
       throw invalid_argument( "Invalid CSV data!" );
     } 
     if(!(labels== "")){
@@ -80,26 +76,32 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
   } 
   if(data[0].points.size() > 0){
     this->vector_size_total = data[0].points.size();
-    std::cout << "vector size " <<this->vector_size_total << "\n";
-    this->dio->write("Upload complete.\n");
+    this->dio->write("Upload complete.");
     return data;
   }
-  this->dio->write("Upload not complete.\n");
+  this->dio->write("Upload not complete.");
   return data;
 };
 
 void Command1::execute(){
-  this->dio->write("Please upload your local train CSV file.\n");
+  this->dio->write("Please upload your local train CSV file.");
   std::string the_content = this->dio->read();
-  this->dio->recived_learning = transfer_data(the_content, "train");
-  //this->dio->write("Upload complete.\n");
-  if(!(this->dio->recived_learning.empty())) {
-    this->dio->write("Please upload your local test CSV file.\n");
-    the_content = this->dio->read();
-    this->dio->recived_testing = transfer_data(the_content, "test");
+  std::cout<<"len: "<<the_content.size()<<": "<<the_content;
+  if(the_content.size() > 3){
+    this->dio->recived_learning = transfer_data(the_content, "train");
     //this->dio->write("Upload complete.\n");
-  } else {
-    this->dio->write("invalid input test file\n");
+    if(!(this->dio->recived_learning.empty())) {
+      this->dio->write("Please upload your local test CSV file.");
+      the_content = this->dio->read();
+      this->dio->recived_testing = transfer_data(the_content, "test");
+      //this->dio->write("Upload complete.\n");
+    } else {
+      this->dio->write("invalid input test file");
+    }
+  } else{
+    //std::cout<<"print";
+    this->dio->write("invalid path");
+    return;
   }
 
 };
