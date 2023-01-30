@@ -60,7 +60,7 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
           }
           continue;
         } else if(!(this->is_double(word)) && file_type == "train"){ //will only occur for the training and not the testing file
-      labels = word;
+          labels = word;
     } else {
       throw invalid_argument( "Invalid CSV data!" );
     } 
@@ -86,7 +86,6 @@ vector<data_struct> Command1::transfer_data(std::string csv_sent, std::string fi
 void Command1::execute(){
   this->dio->write("Please upload your local train CSV file.");
   std::string the_content = this->dio->read();
-  std::cout<<"len: "<<the_content.size()<<": "<<the_content;
   if(the_content.size() > 3){
     this->dio->recived_learning = transfer_data(the_content, "train");
     if(!(this->dio->recived_learning.empty())) {
