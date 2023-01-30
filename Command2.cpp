@@ -28,7 +28,7 @@ std::string Command2::Validate_algorithem_settings(std::string input) {
             if(new_k > 0) {
                 this->dio->k = new_k;
             } 
-        } else if (word == "AUC" || word == "MAN" || word == "CHB" || word == "CAN" || word == "MIN" ) {
+        } else if ((word == "AUC" || word == "MAN" || word == "CHB" || word == "CAN" || word == "MIN") && (input_members == 2)) {
             this->dio->distance_metric = word;
         } else{
             return("invalid input");
