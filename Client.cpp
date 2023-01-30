@@ -124,6 +124,7 @@ void Client::run() {
 
 void Client::Download() {
     std::string classification = this->sodio->read(); //print the classification
+    classification = classification.substr(1);
     if(classification == "please upload data" || classification == "please classify the data") {
         this->stadio->write(classification);
         return;
@@ -137,7 +138,7 @@ void Client::Download() {
             std::string cell;
             int order_number = 1;
 
-            std::ofstream output_file(file_path, std::ios::out | std::ios::trunc);
+            std::ofstream output_file(file_path, std::ios::out);
             if (!output_file.is_open()) {
                 this->stadio->write("Failed to open file for writing");
                 return;
