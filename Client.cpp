@@ -7,11 +7,11 @@
 #include <string.h>
 #include <string>
 #include <fstream>
-#include <thread>
 #include <sstream>
 #include "Client.hpp"
 #include "SocketIO.hpp"
 #include "StandardIO.hpp"
+#include <thread>
 
 using namespace std;
 
@@ -64,7 +64,6 @@ void Client::run() {
             std::string path_train = this->stadio->read();
             ifstream file_train(path_train);
             //std::string line;
-            std::cout<< "check good: " <<file_train.good()<<"\n";
             if (file_train.is_open())
             {
                 std::string fileContent((std::istreambuf_iterator<char>(file_train)),
@@ -90,7 +89,6 @@ void Client::run() {
                 replace(fileContent2.begin(), fileContent2.end(), '\r', ',');
                 fileContent2.erase(std::remove(fileContent2.begin(), fileContent2.end(), '\n'), fileContent2.end());
                 fileContent2.insert(0, ",");
-                this->stadio->write(fileContent2);
                 this->sodio->write(fileContent2);
             } else {
                 std::cout<<"\nfile test didn't open";
@@ -101,18 +99,24 @@ void Client::run() {
             this->stadio->write(message);
         } else if(option == "2") {
             std::string output_2 = this->sodio->read(); //print the params values of K and calculate type
-            this->stadio ->write(output_2); //write the output
+            this->stadio->write(output_2); //write the output
             std::string new_params = this->stadio->read();//takes new params values of K and calculate type
-            this->sodio->write(new_params); //send paramaters
-            this->sodio->read(); //recive the new params values of K and calculate type
+            this->sodio->write(new_params); //send paramaters  
+            if(new_params.empty()){
+                continue;
+            } else {
+            output_2 = this->sodio->read();
+            this->stadio->write(output_2);
+            }
         } else if(option == "3") {
             std::string output_3_upload = this->sodio->read(); //read that the files were classificate or a problen messeage
             this->stadio->write(output_3_upload); //write the output
         }else if(option == "4") {
-            this->sodio->read(); //print the classification
+            std::string output_4 = this->sodio->read(); //print the classification
+            this->stadio->write(output_4);
         } else if(option == "5"){
             Download();
-        } else {
+        }else{
             throw invalid_argument("invalid argument");
         }
     }  

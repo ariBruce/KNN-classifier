@@ -1,4 +1,3 @@
-
 #include "Command2.hpp"
 
 using namespace std;
@@ -17,13 +16,10 @@ std::string Command2::Validate_algorithem_settings(std::string input) {
     stringstream ss(input);
     std::string word;
     int input_members = 0;
-    //when there are still data in the row
     while (getline(ss,word,' ')) {
         input_members += 1;
         if(input_members > 2) {
             return("invalid input in command2");
-        } else if (input_members == 1){
-            word = word.substr(1);
         }
         //check if we get K value
         if (this->is_int(word)) {
@@ -34,16 +30,23 @@ std::string Command2::Validate_algorithem_settings(std::string input) {
             } 
         } else if (word == "AUC" || word == "MAN" || word == "CHB" || word == "CAN" || word == "MIN" ) {
             this->dio->distance_metric = word;
-        } else {
+        } else{
             return("invalid input");
         }
     }
-    return ("The current KNN parameters are: K = " + to_string(this->dio->k) + ", distance_metric = " + this->dio->distance_metric);
+    return("");
+
+    //return ("The current KNN parameters are: K = " + to_string(this->dio->k) + ", distance_metric = " + this->dio->distance_metric);
 } 
     
 void Command2::execute(){
     std::string k = to_string(this->dio->k);
     this->dio->write("The current KNN parameters are: K = " + k + ", distance_metric = " + this->dio->distance_metric);
     std::string user_input = this->dio->read();
-    this->dio->write(Validate_algorithem_settings(user_input));
+    user_input = user_input.substr(1);
+    if(user_input.empty()){
+        return;
+    }
+    std::string output= this->Validate_algorithem_settings(user_input);
+    this->dio->write(output);
 }
