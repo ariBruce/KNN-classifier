@@ -123,35 +123,33 @@ void Client::run() {
 }
 
 void Client::Download() {
-    std::string classification = this->sodio->read(); //print the classification
-    classification = classification.substr(1);
-    if(classification == "please upload data" || classification == "please classify the data") {
+    std::string classification = this->sodio->read(); // Read the classification
+    classification = classification.substr(1); // Remove the first character
+
+    if (classification == "please upload data" || classification == "please classify the data") {
         this->stadio->write(classification);
         return;
     }
-    this->stadio->write("please upload a valid file path");
+    
+    this->stadio->write("Please upload a valid file path");
     std::string file_path = this->stadio->read();
-    std::ifstream file(file_path);
-    if(file.good()) {
-        std::thread downloadThread([&] {
-            std::stringstream classification_stream(classification);
-            std::string cell;
-            int order_number = 1;
-
-            std::ofstream output_file(file_path, std::ios::out);
-            if (!output_file.is_open()) {
-                this->stadio->write("Failed to open file for writing");
-                return;
-            }
-            
-            while (std::getline(classification_stream, cell, ',')) {
-                output_file << order_number << " " << cell << "\n";
-                order_number++;
-            }
-            output_file.close();
-        });
-        downloadThread.detach();
-    } else {
+    std::ofstream output_file(file_path, std::ios::trunc | std::ios::out);
+    
+    if (!output_file.is_open()) {
         this->stadio->write("invalid input");
+        return;
     }
+    
+    std::thread downloadThread([&, classification] {
+        std::stringstream classification_stream(classification);
+        std::string cell;
+        int order_number = 1;
+        
+        while (std::getline(classification_stream, cell, ',')) {
+            output_file << order_number << " " << cell << "\n";
+            order_number++;
+        }
+    });
+    downloadThread.join();
+    output_file.close();
 }
