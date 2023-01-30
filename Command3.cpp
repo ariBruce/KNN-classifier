@@ -17,7 +17,6 @@ void Command3::execute(){
     if (this->dio->recived_testing.empty() || this->dio->recived_learning.empty() || this->dio->distance_metric == "null") {
         this->dio->write("please upload data");
     }else if(this->dio->k == -1){
-        std::cout<<"the k = -1";
         this->dio->write("invalid value for K");
 
     } else {

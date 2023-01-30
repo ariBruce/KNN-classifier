@@ -73,10 +73,11 @@ void Client::run() {
                 this->sodio->write(fileContent);
             } else {
                 this->sodio->write("1");
-                std::string output = this->stadio->read();
-                this->sodio->write(output);
+                std::string output = this->sodio->read();
+                this->stadio->write(output);
                 continue;
             }
+            std::cout<<"here";
             file_train.close();
             std::string message = this->sodio->read();//compleation message
             this->stadio->write(message);
@@ -94,8 +95,8 @@ void Client::run() {
                 this->sodio->write(fileContent2);
             } else {
                 this->sodio->write("1");
-                std::string output = this->stadio->read();
-                this->sodio->write(output);
+                std::string output = this->sodio->read();
+                this->stadio->write(output);
                 continue;
             }
             file_test.close();

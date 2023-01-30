@@ -26,7 +26,7 @@ void CLI::start() {
             }
             allCommands.at(choice - 1)->execute();
         } catch(...){
-            this->dio->write("invalid input CLI");
+            this->dio->write("invalid input");
         }
     }
 }
