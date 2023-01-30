@@ -10,6 +10,7 @@ using namespace std;
 
   Command4::~Command4()
   {
+    
   }
 
   void Command4::execute(){
