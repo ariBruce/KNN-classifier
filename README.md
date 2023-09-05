@@ -1,4 +1,4 @@
-#KNN classifier
+# KNN classifier
 _____________________________________________________________________________________________________________________________________
 This is a server and client where the client connect via ip and port and the server is started with a addres of a csv file and port number. The client will send info to the server and the server will send it a menu containing five options to choose from. they are the following-
 
